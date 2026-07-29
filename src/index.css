@@ -11,4 +11,28 @@
 @theme {
   --font-sans: InterVariable, sans-serif;
   --font-sans--font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+
+  --color-curious-blue-50: #f0f8ff;
+  --color-curious-blue-100: #e0f0fe;
+  --color-curious-blue-200: #bae2fd;
+  --color-curious-blue-300: #7dccfc;
+  --color-curious-blue-400: #38b2f8;
+  --color-curious-blue-500: #1ba2f1;
+  --color-curious-blue-600: #0278c7;
+  --color-curious-blue-700: #0360a1;
+  --color-curious-blue-800: #075285;
+  --color-curious-blue-900: #0c446e;
+  --color-curious-blue-950: #082b49;
+
+  --color-shark-50: #f5f8fa;
+  --color-shark-100: #e9eff5;
+  --color-shark-200: #cedde9;
+  --color-shark-300: #a4c0d5;
+  --color-shark-400: #739fbd;
+  --color-shark-500: #5183a6;
+  --color-shark-600: #3e698b;
+  --color-shark-700: #335571;
+  --color-shark-800: #2d495f;
+  --color-shark-900: #2a3e50;
+  --color-shark-950: #16202a;
 }
