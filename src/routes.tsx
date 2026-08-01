@@ -1,20 +1,20 @@
-import type { RouteObject } from "react-router";
-import App from "./pages/App";
+import { Navigate, type RouteObject } from "react-router";
+import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 
-const routes: RouteObject[] = [
+const routes = (isAuth: boolean): RouteObject[] => [
   {
     path: "/",
-    element: <App />,
+    element: isAuth ? <Home /> : <Navigate to="/sign-in" />,
   },
   {
     path: "/sign-up",
-    element: <SignUp />,
+    element: !isAuth ? <SignUp /> : <Navigate to="/" />,
   },
   {
     path: "/sign-in",
-    element: <SignIn />,
+    element: !isAuth ? <SignIn /> : <Navigate to="/" />,
   },
 ];
 

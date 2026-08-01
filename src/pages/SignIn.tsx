@@ -1,11 +1,12 @@
 import { useState, type ChangeEvent, type SubmitEvent } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { generateToken } from "../lib/api-client";
 import type { InputProps } from "../interfaces/props";
 import Input from "../components/ui/Input";
 import Loader from "../components/ui/Loader";
 import ErrorAlert from "../components/ui/ErrorAlert";
+import useAuth from "../hooks/useAuth";
 
 const inputFields: InputProps[] = [
   { name: "username", label: "Username", type: "text" },
@@ -15,13 +16,12 @@ const inputFields: InputProps[] = [
 const SignIn = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
 
-  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const mutation = useMutation({
     mutationFn: generateToken,
     onSuccess: (data) => {
-      localStorage.setItem("token", data.token);
-      navigate("/");
+      login(data.token);
     },
   });
 
