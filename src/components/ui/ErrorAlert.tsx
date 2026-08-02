@@ -1,5 +1,5 @@
-import { XCircleIcon } from "@heroicons/react/24/solid";
 import type { FC } from "react";
+import { XCircleIcon } from "@heroicons/react/24/solid";
 
 const ErrorAlert: FC<{ error: Error }> = ({ error }) => (
   <div className="rounded-md bg-red-50 p-4 dark:bg-red-500/15 dark:outline-1 dark:outline-red-500/25">
