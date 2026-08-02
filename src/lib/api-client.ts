@@ -37,3 +37,5 @@ export const generateToken = (credentials: Credentials): Promise<Token> =>
 
 export const createUser = (userData: UserCreate): Promise<UserPublic> =>
   request("/users", { method: "POST", body: JSON.stringify(userData) });
+
+export const getCurrentUser = (): Promise<UserPublic> => request("/users/me");

@@ -19,7 +19,7 @@ export interface UserPublic extends UserBase {
   createdAt: Date;
   description: string | null;
   location: string | null;
-  profileImageUrl: string | null;
+  profileImageUrl: string;
   pinnedPostId: number | null;
   url: string | null;
   _count: {
