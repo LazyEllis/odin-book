@@ -40,3 +40,49 @@ export interface Credentials {
 export interface Token {
   token: string;
 }
+
+interface Author {
+  id: number;
+  name: string;
+  username: string;
+  profileImageUrl: string;
+}
+
+interface PostReference {
+  id: number;
+  text: string;
+  attachment: string;
+  createdAt: string;
+  author: Author;
+}
+
+interface PostBase {
+  text: string;
+}
+
+export interface PostCreate extends PostBase {
+  inReplyToPostId: number;
+  quotedPostId: number;
+}
+
+export interface PostPublic extends PostBase {
+  id: number;
+  attachment: null;
+  createdAt: string;
+  author: Author;
+  conversationId: number | null;
+  repliedTo: PostReference | null;
+  quotedPost: PostReference | null;
+  _count: {
+    reposts: number;
+    replies: number;
+    likes: number;
+    quotes: number;
+    bookmarks: number;
+  };
+  interactionStatus: {
+    isLiked: boolean;
+    isReposted: boolean;
+    isBookmarked: boolean;
+  };
+}

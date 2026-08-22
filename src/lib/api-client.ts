@@ -1,5 +1,6 @@
 import type {
   Credentials,
+  PostPublic,
   Token,
   UserCreate,
   UserPublic,
@@ -39,3 +40,23 @@ export const createUser = (userData: UserCreate): Promise<UserPublic> =>
   request("/users", { method: "POST", body: JSON.stringify(userData) });
 
 export const getCurrentUser = (): Promise<UserPublic> => request("/users/me");
+
+export const listPosts = (): Promise<PostPublic[]> => request("/posts");
+
+export const repostPost = (postId: number): Promise<void> =>
+  request(`/users/me/reposts/${postId}`, { method: "PUT" });
+
+export const unrepostPost = (postId: number): Promise<void> =>
+  request(`/users/me/reposts/${postId}`, { method: "DELETE" });
+
+export const likePost = (postId: number): Promise<void> =>
+  request(`/users/me/likes/${postId}`, { method: "PUT" });
+
+export const unlikePost = (postId: number): Promise<void> =>
+  request(`/users/me/likes/${postId}`, { method: "DELETE" });
+
+export const bookmarkPost = (postId: number): Promise<void> =>
+  request(`/users/me/bookmarks/${postId}`, { method: "PUT" });
+
+export const removePostBookmark = (postId: number): Promise<void> =>
+  request(`/users/me/bookmarks/${postId}`, { method: "DELETE" });

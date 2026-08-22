@@ -38,7 +38,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="mx-auto flex h-13.25 w-full flex-row items-center justify-between border-b border-white/10 px-4">
+      <header className="mx-auto flex h-13.25 w-full flex-row items-center justify-between border-b border-white/10 px-4">
         {data ? (
           <button
             onClick={handleOpen}
@@ -57,7 +57,7 @@ const DashboardLayout = () => {
         <div className="flex shrink-0 items-center">
           <img alt="Gistr" src={logo} className="h-8 w-auto" />
         </div>
-      </div>
+      </header>
       <main className="flex-1">
         <Outlet />
       </main>
