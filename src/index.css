@@ -35,4 +35,9 @@
   --color-shark-800: #2d495f;
   --color-shark-900: #2a3e50;
   --color-shark-950: #16202a;
+
+  --color-reply: #19c7f0;
+  --color-repost: #00ba7c;
+  --color-like: #f91880;
+  --color-bookmark: #1d9bf0;
 }
