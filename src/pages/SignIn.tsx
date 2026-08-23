@@ -37,7 +37,7 @@ const SignIn = () => {
   return (
     <main className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h1 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900 dark:text-white">
+        <h1 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-black dark:text-white">
           Sign in to your account
         </h1>
       </div>
@@ -58,9 +58,9 @@ const SignIn = () => {
           <div>
             <button
               type="submit"
-              className="bg-curious-blue-600 hover:bg-curious-blue-500 focus-visible:outline-curious-blue-600 dark:bg-curious-blue-500 dark:hover:bg-curious-blue-400 dark:focus-visible:outline-curious-blue-500 flex w-full justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 dark:shadow-none"
+              className="flex w-full cursor-pointer items-center justify-center rounded-md bg-black px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-black/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-white dark:text-black dark:shadow-none dark:hover:bg-white/90 dark:focus-visible:outline-white"
             >
-              {mutation.isPending && <Loader />}{" "}
+              {mutation.isPending && <Loader isButton />}{" "}
               {mutation.isPending ? "Signing in..." : "Sign in"}
             </button>
           </div>
@@ -70,7 +70,7 @@ const SignIn = () => {
           Don't have an account?{" "}
           <Link
             to="/sign-up"
-            className="text-curious-blue-600 hover:text-curious-blue-500 dark:text-curious-blue-400 dark:hover:text-curious-blue-300 font-semibold"
+            className="font-semibold text-black hover:text-black/90 dark:text-white dark:hover:text-white/90"
           >
             Sign up
           </Link>

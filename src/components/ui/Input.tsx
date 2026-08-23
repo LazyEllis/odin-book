@@ -14,7 +14,7 @@ const Input: FC<InputProps> = ({ name, label, ...rest }) => (
         id={name}
         name={name}
         {...rest}
-        className="focus:outline-curious-blue-600 dark:focus:outline-curious-blue-500 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500"
+        className="focus:outline-primary block w-full rounded-md bg-white px-3 py-1.5 text-base text-black outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500"
       />
     </div>
   </div>

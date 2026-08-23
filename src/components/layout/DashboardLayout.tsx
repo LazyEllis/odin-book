@@ -38,11 +38,11 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex h-full flex-col">
-      <header className="mx-auto flex h-13.25 w-full flex-row items-center justify-between border-b border-white/10 px-4">
+      <header className="mx-auto flex h-13.25 w-full flex-row items-center justify-between border-b border-black/10 px-4 dark:border-white/10">
         {data ? (
           <button
             onClick={handleOpen}
-            className="focus-visible:outline-curious-blue-400 relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="focus-visible:outline-primary relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <span className="sr-only">Open user menu</span>
             <img
@@ -61,13 +61,13 @@ const DashboardLayout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
-      <nav className="flex h-14 max-h-[16vh] flex-row border-t border-white/10">
+      <nav className="flex h-14 max-h-[16vh] flex-row border-t border-black/10 dark:border-white/10">
         <NavLink
           to="/"
           className="flex grow flex-col items-center justify-center"
         >
           {({ isActive }) => (
-            <div className="rounded-full p-2 hover:bg-white/10">
+            <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
               <span className="sr-only">Home</span>
               {isActive ? (
                 <HomeSolidIcon className="inline-block size-7 max-w-full" />
@@ -82,7 +82,7 @@ const DashboardLayout = () => {
           className="flex grow flex-col items-center justify-center"
         >
           {({ isActive }) => (
-            <div className="rounded-full p-2 hover:bg-white/10">
+            <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
               <span className="sr-only">Explore</span>
               <MagnifyingGlassIcon
                 className={classNames(
@@ -98,7 +98,7 @@ const DashboardLayout = () => {
           className="flex grow flex-col items-center justify-center"
         >
           {({ isActive }) => (
-            <div className="rounded-full p-2 hover:bg-white/10">
+            <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
               <span className="sr-only">Profile</span>
               <UserIcon
                 className={classNames(
@@ -114,7 +114,7 @@ const DashboardLayout = () => {
           className="flex grow flex-col items-center justify-center"
         >
           {({ isActive }) => (
-            <div className="rounded-full p-2 hover:bg-white/10">
+            <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
               <span className="sr-only">Bookmarks</span>
               <BookmarkIcon
                 className={classNames(
@@ -127,9 +127,9 @@ const DashboardLayout = () => {
         </NavLink>
         <button
           onClick={logout}
-          className="flex grow flex-col items-center justify-center"
+          className="flex grow cursor-pointer flex-col items-center justify-center"
         >
-          <div className="rounded-full p-2 hover:bg-white/10">
+          <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
             <span className="sr-only">Log out</span>
             <ArrowRightEndOnRectangleIcon className="inline-block size-7 max-w-full" />
           </div>
@@ -154,7 +154,7 @@ const DashboardLayout = () => {
                     <button
                       type="button"
                       onClick={handleClose}
-                      className="focus-visible:outline-curious-blue-500 dark:focus-visible:outline-curious-blue-400 relative rounded-md text-gray-300 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-gray-400 dark:hover:text-white"
+                      className="focus-visible:outline-primary relative rounded-md text-gray-300 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-gray-400 dark:hover:text-white"
                     >
                       <span className="absolute -inset-2.5" />
                       <span className="sr-only">Close panel</span>
@@ -162,20 +162,20 @@ const DashboardLayout = () => {
                     </button>
                   </div>
                 </TransitionChild>
-                <div className="relative flex h-full flex-col overflow-y-auto bg-white py-4 shadow-xl dark:bg-gray-800 dark:after:absolute dark:after:inset-y-0 dark:after:left-0 dark:after:w-px dark:after:bg-white/10">
+                <div className="relative flex h-full flex-col overflow-y-auto bg-white py-4 shadow-xl dark:bg-black dark:after:absolute dark:after:inset-y-0 dark:after:left-0 dark:after:w-px dark:after:bg-white/10">
                   {data ? (
                     <>
                       <div className="px-4">
                         <div className="mb-2">
                           <Link
                             to={`/users/${data.id}`}
-                            className="focus-visible:outline-curious-blue-400 block w-fit rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
+                            className="focus-visible:outline-primary block w-fit rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
                           >
                             <span className="sr-only">Open user profile</span>
                             <img
                               alt=""
                               src={data.profileImageUrl}
-                              className="size-8 cursor-pointer rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
+                              className="size-8 cursor-pointer rounded-full bg-black outline -outline-offset-1 outline-white/10"
                             />
                           </Link>
                         </div>
@@ -218,7 +218,7 @@ const DashboardLayout = () => {
                         <Link
                           to="/"
                           onClick={handleClose}
-                          className="flex items-center p-4 text-xl font-bold hover:bg-white/10"
+                          className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                         >
                           <HomeIcon className="mr-6 size-6 stroke-2" />
                           Home
@@ -226,7 +226,7 @@ const DashboardLayout = () => {
                         <Link
                           to="/explore"
                           onClick={handleClose}
-                          className="flex items-center p-4 text-xl font-bold hover:bg-white/10"
+                          className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                         >
                           <MagnifyingGlassIcon className="mr-6 size-6 stroke-2" />
                           Explore
@@ -234,7 +234,7 @@ const DashboardLayout = () => {
                         <Link
                           to="/users"
                           onClick={handleClose}
-                          className="flex items-center p-4 text-xl font-bold hover:bg-white/10"
+                          className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                         >
                           <UserPlusIcon className="mr-6 size-6 stroke-2" />
                           Follow People
@@ -242,7 +242,7 @@ const DashboardLayout = () => {
                         <Link
                           to={`/users/${data.id}/followers`}
                           onClick={handleClose}
-                          className="flex items-center p-4 text-xl font-bold hover:bg-white/10"
+                          className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                         >
                           <UserIcon className="mr-6 size-6 stroke-2" />
                           Profile
@@ -250,20 +250,20 @@ const DashboardLayout = () => {
                         <Link
                           to={`/bookmarks`}
                           onClick={handleClose}
-                          className="flex items-center p-4 text-xl font-bold hover:bg-white/10"
+                          className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                         >
                           <BookmarkIcon className="mr-6 size-6 stroke-2" />
                           Bookmarks
                         </Link>
                         <button
                           onClick={logout}
-                          className="flex cursor-pointer items-center p-4 text-left text-xl font-bold"
+                          className="flex cursor-pointer items-center p-4 text-left text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                         >
                           <ArrowRightEndOnRectangleIcon className="mr-6 size-6 stroke-2" />
                           Log out
                         </button>
                         <div>
-                          <div className="m-auto h-px w-[89%] bg-white/10"></div>
+                          <div className="m-auto h-px w-[89%] bg-black/10 dark:bg-white/10"></div>
                         </div>
                       </div>
                     </>

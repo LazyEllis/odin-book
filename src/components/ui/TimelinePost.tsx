@@ -110,14 +110,14 @@ const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {
   const handleBookmarkToggle = () => bookmarkMutation.mutate(post.id);
 
   return (
-    <div className="border-b border-white/10">
-      <article className="flex cursor-pointer overflow-hidden px-4 py-3 hover:bg-white/3">
+    <div className="border-b border-black/10 dark:border-white/10">
+      <article className="flex cursor-pointer overflow-hidden px-4 py-3 hover:bg-black/3 dark:hover:bg-white/3">
         <div className="mr-2 grow-0 basis-10 items-center">
           <Link
             aria-hidden
             tabIndex={-1}
             to={`/users/${post.author.id}`}
-            className="focus-visible:outline-curious-blue-400 block w-fit rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="focus-visible:outline-primary block w-fit rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <img
               alt=""
@@ -136,7 +136,7 @@ const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {
                 >
                   {post.author.name}
                 </Link>
-                <div className="text-gray-400">
+                <div className="text-gray-500 dark:text-gray-400">
                   <Link to={`/users/${post.author.id}`}>
                     @{post.author.username}
                   </Link>{" "}
@@ -149,7 +149,7 @@ const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {
           <div className="mt-3 flex justify-between gap-x-1">
             <button
               aria-label={`${post._count.replies} ${post._count.replies === 1 ? "reply" : "replies"}. Reply`}
-              className="group hover:text-reply flex min-h-5 cursor-pointer justify-center overflow-visible text-gray-400"
+              className="group hover:text-reply flex min-h-5 cursor-pointer justify-center overflow-visible text-gray-500 dark:text-gray-400"
             >
               <div className="flex min-w-0 items-center justify-start wrap-break-word whitespace-nowrap">
                 <div className="relative inline-flex">
@@ -172,7 +172,7 @@ const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {
                 "group hover:text-repost flex min-h-5 cursor-pointer justify-center overflow-visible",
                 post.interactionStatus.isReposted
                   ? "text-repost"
-                  : "text-gray-400",
+                  : "text-gray-500 dark:text-gray-400",
               )}
             >
               <div className="flex min-w-0 items-center justify-start wrap-break-word whitespace-nowrap">
@@ -195,14 +195,19 @@ const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {
               className={classNames(
                 "group hover:text-like flex min-h-5 cursor-pointer justify-center overflow-visible",
                 post.interactionStatus.isLiked
-                  ? "text-like fill-like"
-                  : "text-gray-400",
+                  ? "text-like"
+                  : "text-gray-500 dark:text-gray-400",
               )}
             >
               <div className="flex min-w-0 items-center justify-start wrap-break-word whitespace-nowrap">
                 <div className="relative inline-flex">
                   <div className="group-hover:bg-like/10 absolute inset-0 -m-2 inline-flex rounded-full"></div>
-                  <HeartIcon className="size-4.75 fill-inherit" />
+                  <HeartIcon
+                    className={classNames(
+                      "size-4.75",
+                      post.interactionStatus.isLiked && "fill-like",
+                    )}
+                  />
                 </div>
                 {post._count.likes > 0 && (
                   <div className="inline-flex overflow-hidden pl-1 text-sm">
@@ -219,14 +224,19 @@ const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {
               className={classNames(
                 "group hover:text-bookmark flex min-h-5 cursor-pointer justify-center overflow-visible",
                 post.interactionStatus.isBookmarked
-                  ? "text-bookmark fill-bookmark"
-                  : "text-gray-400",
+                  ? "text-bookmark"
+                  : "text-gray-500 dark:text-gray-400",
               )}
             >
               <div className="flex min-w-0 items-center justify-start wrap-break-word whitespace-nowrap">
                 <div className="relative inline-flex">
                   <div className="group-hover:bg-bookmark/10 absolute inset-0 -m-2 inline-flex rounded-full"></div>
-                  <BookmarkIcon className="size-4.75 fill-inherit" />
+                  <BookmarkIcon
+                    className={classNames(
+                      "size-4.75",
+                      post.interactionStatus.isBookmarked && "fill-bookmark",
+                    )}
+                  />
                 </div>
                 {post._count.bookmarks > 0 && (
                   <div className="inline-flex overflow-hidden pl-1 text-sm">

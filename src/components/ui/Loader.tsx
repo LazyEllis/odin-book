@@ -1,6 +1,16 @@
-const Loader = () => (
+import type { FC } from "react";
+import { classNames } from "../../utils/format";
+
+interface IComponentProps {
+  isButton?: boolean;
+}
+
+const Loader: FC<IComponentProps> = ({ isButton }) => (
   <svg
-    className="mr-3 -ml-1 size-5 animate-spin text-white"
+    className={classNames(
+      "mr-3 -ml-1 size-5 animate-spin",
+      isButton ? "text-white dark:text-black" : "text-black dark:text-white",
+    )}
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
