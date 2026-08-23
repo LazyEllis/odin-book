@@ -20,7 +20,7 @@ import { classNames } from "../../utils/format";
 import useAuth from "../../hooks/useAuth";
 import useProfile from "../../hooks/useProfile";
 import Loader from "../ui/Loader";
-import logo from "../../assets/logo.png";
+import Logo from "../ui/Logo";
 
 const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +55,8 @@ const DashboardLayout = () => {
           <Loader />
         )}
         <div className="flex shrink-0 items-center">
-          <img alt="Gistr" src={logo} className="h-8 w-auto" />
+          <span className="sr-only">Chirp</span>
+          <Logo className="size-8" />
         </div>
       </header>
       <main className="flex-1">
