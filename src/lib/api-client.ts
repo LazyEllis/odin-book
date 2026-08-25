@@ -39,6 +39,9 @@ export const generateToken = (credentials: Credentials): Promise<Token> =>
 export const createUser = (userData: UserCreate): Promise<UserPublic> =>
   request("/users", { method: "POST", body: JSON.stringify(userData) });
 
+export const getUserById = (userId: number): Promise<UserPublic> =>
+  request(`/users/${userId}`);
+
 export const getCurrentUser = (): Promise<UserPublic> => request("/users/me");
 
 export const listPosts = (): Promise<PostPublic[]> => request("/posts");

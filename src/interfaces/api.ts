@@ -16,7 +16,7 @@ export interface UserUpdate extends UserBase {
 
 export interface UserPublic extends UserBase {
   id: number;
-  createdAt: Date;
+  createdAt: string;
   description: string | null;
   location: string | null;
   profileImageUrl: string;

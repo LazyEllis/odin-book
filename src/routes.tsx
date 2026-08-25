@@ -3,12 +3,16 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 
 const routes = (isAuth: boolean): RouteObject[] => [
   {
     path: "/",
     element: isAuth ? <DashboardLayout /> : <Navigate to="/sign-in" />,
-    children: [{ index: true, element: <Home /> }],
+    children: [
+      { index: true, element: <Home /> },
+      { path: "/users/:userId", element: <Profile /> },
+    ],
   },
   {
     path: "/sign-up",
