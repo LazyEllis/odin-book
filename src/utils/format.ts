@@ -29,3 +29,5 @@ export const formatTimestamp = (timestamp: string) => {
 export const classNames = (...classes: (string | boolean)[]) => {
   return classes.filter(Boolean).join(" ");
 };
+
+export const formatURL = (url: string) => url.replace(/(^\w+:|^)\/\//, "");
