@@ -38,7 +38,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex h-full flex-col">
-      <header className="mx-auto flex h-13.25 w-full flex-row items-center justify-between border-b border-black/10 px-4 dark:border-white/10">
+      <header className="mx-auto flex h-13.25 w-full flex-row items-center justify-between border-b border-black/10 px-4 dark:border-white/20">
         {data ? (
           <button
             onClick={handleOpen}
@@ -62,7 +62,7 @@ const DashboardLayout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
-      <nav className="flex h-14 max-h-[16vh] flex-row border-t border-black/10 dark:border-white/10">
+      <nav className="flex h-14 max-h-[16vh] flex-row border-t border-black/10 dark:border-white/20">
         <NavLink
           to="/"
           className="flex grow flex-col items-center justify-center"
@@ -241,7 +241,7 @@ const DashboardLayout = () => {
                           Follow People
                         </Link>
                         <Link
-                          to={`/users/${data.id}/followers`}
+                          to={`/users/${data.id}`}
                           onClick={handleClose}
                           className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                         >

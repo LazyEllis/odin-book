@@ -110,7 +110,7 @@ const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {
   const handleBookmarkToggle = () => bookmarkMutation.mutate(post.id);
 
   return (
-    <div className="border-b border-black/10 dark:border-white/10">
+    <div className="border-b border-black/10 dark:border-white/20">
       <article className="flex cursor-pointer overflow-hidden px-4 py-3 hover:bg-black/3 dark:hover:bg-white/3">
         <div className="mr-2 grow-0 basis-10 items-center">
           <Link
