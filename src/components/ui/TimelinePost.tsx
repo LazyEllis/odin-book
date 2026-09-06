@@ -20,7 +20,7 @@ import {
 
 interface IComponentProps {
   post: PostPublic;
-  queryKey: string[];
+  queryKey: unknown[];
 }
 
 const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {

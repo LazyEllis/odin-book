@@ -63,3 +63,6 @@ export const bookmarkPost = (postId: number): Promise<void> =>
 
 export const removePostBookmark = (postId: number): Promise<void> =>
   request(`/users/me/bookmarks/${postId}`, { method: "DELETE" });
+
+export const getUserPosts = (userId: number): Promise<PostPublic[]> =>
+  request(`/users/${userId}/posts`);

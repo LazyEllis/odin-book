@@ -1,9 +1,10 @@
 import { Link, NavLink, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { LinkIcon, MapPinIcon } from "@heroicons/react/24/outline";
-import { getUserById } from "../lib/api-client";
+import { getUserById, getUserPosts } from "../lib/api-client";
 import { classNames, formatURL } from "../utils/format";
 import useProfile from "../hooks/useProfile";
+import TimelinePost from "../components/ui/TimelinePost";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -15,13 +16,25 @@ const Profile = () => {
     queryFn: () => getUserById(Number(userId)),
   });
 
-  if (userQuery.isPending || profileQuery.isPending)
+  const postsQuery = useQuery({
+    queryKey: ["users", Number(userId), "posts"],
+    queryFn: () => getUserPosts(Number(userId)),
+  });
+
+  if (userQuery.isPending || profileQuery.isPending || postsQuery.isPending)
     return <div>Loading...</div>;
 
-  if (userQuery.error || profileQuery.error)
-    return <div>{userQuery.error?.message || profileQuery.error?.message}</div>;
+  if (userQuery.error || profileQuery.error || postsQuery.error)
+    return (
+      <div>
+        {userQuery.error?.message ||
+          profileQuery.error?.message ||
+          postsQuery.error?.message}
+      </div>
+    );
 
   const { data: user } = userQuery;
+  const { data: posts } = postsQuery;
 
   const isAuthenticatedUser = profileQuery.data.id === user.id;
 
@@ -108,7 +121,7 @@ const Profile = () => {
               </span>
             </Link>
           </div>
-          <nav className="mt-4 flex overflow-x-auto">
+          <nav className="mt-4 flex overflow-x-auto border-b border-white/20">
             <NavLink
               to={`/users/${user.id}`}
               className="relative flex h-13.25 min-w-14 grow flex-col items-center justify-end px-4 hover:bg-black/10 dark:hover:bg-white/10"
@@ -178,6 +191,15 @@ const Profile = () => {
           </nav>
         </div>
       </header>
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        {posts.map((post) => (
+          <TimelinePost
+            post={post}
+            queryKey={["users", Number(userId), "posts"]}
+            key={post.id}
+          />
+        ))}
+      </div>
     </>
   );
 };
