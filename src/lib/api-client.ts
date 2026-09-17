@@ -66,3 +66,9 @@ export const removePostBookmark = (postId: number): Promise<void> =>
 
 export const getUserPosts = (userId: number): Promise<PostPublic[]> =>
   request(`/users/${userId}/posts`);
+
+export const getUserReplies = (userId: number): Promise<PostPublic[]> =>
+  request(`/users/${userId}/replies`);
+
+export const getUserReposts = (userId: number): Promise<PostPublic[]> =>
+  request(`/users/${userId}/reposts`);

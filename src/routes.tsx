@@ -12,6 +12,8 @@ const routes = (isAuth: boolean): RouteObject[] => [
     children: [
       { index: true, element: <Home /> },
       { path: "/users/:userId", element: <Profile /> },
+      { path: "/users/:userId/replies", element: <Profile /> },
+      { path: "/users/:userId/reposts", element: <Profile /> },
     ],
   },
   {
