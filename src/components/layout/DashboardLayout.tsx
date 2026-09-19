@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import {
   Dialog,
@@ -32,9 +32,11 @@ const DashboardLayout = () => {
 
   const handleClose = () => setIsOpen(false);
 
-  if (error && error.message === "Unauthorized") {
-    logout();
-  }
+  useEffect(() => {
+    if (error?.message === "Unauthorized") {
+      logout();
+    }
+  }, [error?.message, logout]);
 
   return (
     <div className="flex h-full flex-col">
