@@ -31,3 +31,13 @@ export const classNames = (...classes: (string | boolean)[]) => {
 };
 
 export const formatURL = (url: string) => url.replace(/(^\w+:|^)\/\//, "");
+
+export const pastTense = (resource: string) => {
+  if (resource === "posts") {
+    return "posted";
+  } else if (resource === "replies") {
+    return "replied";
+  } else {
+    return "reposted";
+  }
+};

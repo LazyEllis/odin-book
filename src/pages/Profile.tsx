@@ -191,6 +191,8 @@ const Profile = () => {
         <ProfilePostList
           query={postsQuery}
           queryKey={postsQueryData.queryKey}
+          user={user}
+          isAuthenticatedUser={isAuthenticatedUser}
         />
       </div>
     </>
