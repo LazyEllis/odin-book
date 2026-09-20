@@ -1,37 +1,30 @@
-import { Link, NavLink, useLocation, useParams } from "react-router";
+import { Link, NavLink, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { LinkIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { getUserById } from "../lib/api-client";
 import { classNames, formatURL } from "../utils/format";
-import { getPostsQueryData } from "../utils/query-data";
-import useProfile from "../hooks/useProfile";
+import useCurrentUser from "../hooks/useCurrentUser";
 import ProfilePostList from "../components/ProfilePostList";
 
 const Profile = () => {
   const { userId } = useParams();
 
-  const location = useLocation();
+  const { data: currentUser } = useCurrentUser();
 
-  const postsQueryData = getPostsQueryData(Number(userId), location.pathname);
-
-  const profileQuery = useProfile();
-
-  const userQuery = useQuery({
+  const {
+    isPending,
+    error,
+    data: user,
+  } = useQuery({
     queryKey: ["users", Number(userId)],
     queryFn: () => getUserById(Number(userId)),
   });
 
-  const postsQuery = useQuery(postsQueryData);
+  if (isPending) return <div>Loading...</div>;
 
-  if (userQuery.isPending || profileQuery.isPending)
-    return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
 
-  if (userQuery.error || profileQuery.error)
-    return <div>{userQuery.error?.message || profileQuery.error?.message}</div>;
-
-  const { data: user } = userQuery;
-
-  const isAuthenticatedUser = profileQuery.data.id === user.id;
+  const isCurrentUser = currentUser?.id === user.id;
 
   return (
     <>
@@ -43,12 +36,12 @@ const Profile = () => {
               <img
                 src={user.profileImageUrl}
                 alt=""
-                className="h-24 rounded-full ring-4 ring-white sm:h-32 dark:ring-black dark:outline-1 dark:-outline-offset-1 dark:outline-white/10"
+                className="size-24 rounded-full bg-gray-800 ring-4 ring-white sm:size-32 dark:ring-black dark:outline-1 dark:-outline-offset-1 dark:outline-white/10"
               />
             </div>
             <div className="flex min-w-0 flex-1 items-center justify-end pb-1">
               <div className="flex flex-row justify-stretch space-x-4">
-                {isAuthenticatedUser ? (
+                {isCurrentUser ? (
                   <button className="inline-flex cursor-pointer items-center rounded-full border-black bg-white px-4 py-2 text-sm font-semibold text-black shadow-xs outline-1 outline-offset-1 outline-black hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-black dark:text-white dark:shadow-none dark:outline-white dark:hover:bg-white/10">
                     Edit profile
                   </button>
@@ -188,12 +181,7 @@ const Profile = () => {
         </div>
       </header>
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <ProfilePostList
-          query={postsQuery}
-          queryKey={postsQueryData.queryKey}
-          user={user}
-          isAuthenticatedUser={isAuthenticatedUser}
-        />
+        <ProfilePostList user={user} isCurrentUser={isCurrentUser} />
       </div>
     </>
   );

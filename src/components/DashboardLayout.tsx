@@ -18,13 +18,13 @@ import {
 import { HomeIcon as HomeSolidIcon } from "@heroicons/react/24/solid";
 import { classNames } from "../utils/format";
 import useAuth from "../hooks/useAuth";
-import useProfile from "../hooks/useProfile";
+import useCurrentUser from "../hooks/useCurrentUser";
 import Logo from "./Logo";
 
 const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { error, data } = useProfile();
+  const { error, data: user } = useCurrentUser();
   const { logout } = useAuth();
 
   const handleOpen = () => setIsOpen(true);
@@ -37,7 +37,7 @@ const DashboardLayout = () => {
     }
   }, [error?.message, logout]);
 
-  if (!data) return <Logo className="absolute inset-0 m-auto size-18" />;
+  if (!user) return <Logo className="absolute inset-0 m-auto size-18" />;
 
   return (
     <div className="flex h-full flex-col">
@@ -49,7 +49,7 @@ const DashboardLayout = () => {
           <span className="sr-only">Open user menu</span>
           <img
             alt=""
-            src={data.profileImageUrl}
+            src={user.profileImageUrl}
             className="size-8 cursor-pointer rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
           />
         </button>
@@ -94,7 +94,7 @@ const DashboardLayout = () => {
           )}
         </NavLink>
         <NavLink
-          to={`/users/${data.id}`}
+          to={`/users/${user.id}`}
           className="flex grow flex-col items-center justify-center"
         >
           {({ isActive }) => (
@@ -166,44 +166,44 @@ const DashboardLayout = () => {
                   <div className="px-4">
                     <div className="mb-2">
                       <Link
-                        to={`/users/${data.id}`}
+                        to={`/users/${user.id}`}
                         className="focus-visible:outline-primary block w-fit rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
                       >
                         <span className="sr-only">Open user profile</span>
                         <img
                           alt=""
-                          src={data.profileImageUrl}
+                          src={user.profileImageUrl}
                           className="size-8 cursor-pointer rounded-full bg-black outline -outline-offset-1 outline-white/10"
                         />
                       </Link>
                     </div>
                     <div className="mb-3">
                       <Link
-                        to={`/users/${data.id}`}
+                        to={`/users/${user.id}`}
                         className="block w-fit font-bold hover:underline"
                       >
-                        {data.name}
+                        {user.name}
                       </Link>
-                      <Link to={`/users/${data.id}`} className="block w-fit">
-                        @{data.username}
+                      <Link to={`/users/${user.id}`} className="block w-fit">
+                        @{user.username}
                       </Link>
                     </div>
                     <div className="flex gap-5 text-sm">
                       <Link
-                        to={`/users/${data.id}/following`}
+                        to={`/users/${user.id}/following`}
                         className="hover:underline"
                       >
                         <span className="font-bold">
-                          {data._count.following}
+                          {user._count.following}
                         </span>{" "}
                         Following
                       </Link>
                       <Link
-                        to={`/users/${data.id}/followers`}
+                        to={`/users/${user.id}/followers`}
                         className="hover:underline"
                       >
                         <span className="font-bold">
-                          {data._count.followers}
+                          {user._count.followers}
                         </span>{" "}
                         Followers
                       </Link>
@@ -235,7 +235,7 @@ const DashboardLayout = () => {
                       Follow People
                     </Link>
                     <Link
-                      to={`/users/${data.id}`}
+                      to={`/users/${user.id}`}
                       onClick={handleClose}
                       className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                     >
