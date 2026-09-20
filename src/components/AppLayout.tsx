@@ -21,7 +21,7 @@ import useAuth from "../hooks/useAuth";
 import useCurrentUser from "../hooks/useCurrentUser";
 import Logo from "./Logo";
 
-const DashboardLayout = () => {
+const AppLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { error, data: user } = useCurrentUser();
@@ -271,4 +271,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default AppLayout;

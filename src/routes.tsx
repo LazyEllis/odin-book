@@ -1,5 +1,5 @@
 import { Navigate, type RouteObject } from "react-router";
-import DashboardLayout from "./components/DashboardLayout";
+import AppLayout from "./components/AppLayout";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
@@ -8,7 +8,7 @@ import Profile from "./pages/Profile";
 const routes = (isAuth: boolean): RouteObject[] => [
   {
     path: "/",
-    element: isAuth ? <DashboardLayout /> : <Navigate to="/sign-in" />,
+    element: isAuth ? <AppLayout /> : <Navigate to="/sign-in" />,
     children: [
       { index: true, element: <Home /> },
       { path: "/users/:userId", element: <Profile /> },
