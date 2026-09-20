@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { classNames } from "../../utils/format";
+import { classNames } from "../utils/format";
 
 interface IComponentProps {
   isButton?: boolean;

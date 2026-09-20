@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import type { UseQueryResult } from "@tanstack/react-query";
-import type { PostPublic, UserPublic } from "../../interfaces/api";
-import { pastTense } from "../../utils/format";
+import type { PostPublic, UserPublic } from "../interfaces/api";
+import { pastTense } from "../utils/format";
 import TimelinePost from "./TimelinePost";
 
 interface IComponentProps {

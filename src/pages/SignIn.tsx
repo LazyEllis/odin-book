@@ -3,9 +3,9 @@ import { Link } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { generateToken } from "../lib/api-client";
 import type { InputProps } from "../interfaces/props";
-import Input from "../components/ui/Input";
-import Loader from "../components/ui/Loader";
-import ErrorAlert from "../components/ui/ErrorAlert";
+import Input from "../components/Input";
+import Loader from "../components/Loader";
+import ErrorAlert from "../components/ErrorAlert";
 import useAuth from "../hooks/useAuth";
 
 const inputFields: InputProps[] = [

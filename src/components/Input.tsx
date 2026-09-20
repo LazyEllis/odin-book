@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { InputProps } from "../../interfaces/props";
+import type { InputProps } from "../interfaces/props";
 
 const Input: FC<InputProps> = ({ name, label, ...rest }) => (
   <div>

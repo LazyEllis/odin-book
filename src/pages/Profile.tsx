@@ -5,7 +5,7 @@ import { getUserById } from "../lib/api-client";
 import { classNames, formatURL } from "../utils/format";
 import { getPostsQueryData } from "../utils/query-data";
 import useProfile from "../hooks/useProfile";
-import ProfilePostList from "../components/ui/ProfilePostList";
+import ProfilePostList from "../components/ProfilePostList";
 
 const Profile = () => {
   const { userId } = useParams();

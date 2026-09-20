@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "../lib/api-client";
 import type { InputProps } from "../interfaces/props";
-import Input from "../components/ui/Input";
-import Loader from "../components/ui/Loader";
-import ErrorAlert from "../components/ui/ErrorAlert";
+import Input from "../components/Input";
+import Loader from "../components/Loader";
+import ErrorAlert from "../components/ErrorAlert";
 
 const inputFields: InputProps[] = [
   { name: "name", label: "Name", type: "text" },

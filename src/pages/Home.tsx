@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { listPosts } from "../lib/api-client";
-import TimelinePost from "../components/ui/TimelinePost";
+import TimelinePost from "../components/TimelinePost";
 
 const Home = () => {
   const { data, isPending, error } = useQuery({

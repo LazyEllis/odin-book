@@ -16,11 +16,11 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon as HomeSolidIcon } from "@heroicons/react/24/solid";
-import { classNames } from "../../utils/format";
-import useAuth from "../../hooks/useAuth";
-import useProfile from "../../hooks/useProfile";
-import Loader from "../ui/Loader";
-import Logo from "../ui/Logo";
+import { classNames } from "../utils/format";
+import useAuth from "../hooks/useAuth";
+import useProfile from "../hooks/useProfile";
+import Loader from "./Loader";
+import Logo from "./Logo";
 
 const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -7,8 +7,8 @@ import {
   HeartIcon,
   BookmarkIcon,
 } from "@heroicons/react/24/outline";
-import type { PostPublic } from "../../interfaces/api";
-import { classNames, formatTimestamp } from "../../utils/format";
+import type { PostPublic } from "../interfaces/api";
+import { classNames, formatTimestamp } from "../utils/format";
 import {
   bookmarkPost,
   likePost,
@@ -16,7 +16,7 @@ import {
   repostPost,
   unlikePost,
   unrepostPost,
-} from "../../lib/api-client";
+} from "../lib/api-client";
 
 interface IComponentProps {
   post: PostPublic;

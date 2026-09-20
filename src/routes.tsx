@@ -1,7 +1,7 @@
 import { Navigate, type RouteObject } from "react-router";
+import DashboardLayout from "./components/DashboardLayout";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
-import DashboardLayout from "./components/layout/DashboardLayout";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 
