@@ -113,68 +113,62 @@ const Profile = () => {
             <NavLink
               to={`/users/${user.id}`}
               end
-              className="relative flex h-13.25 min-w-14 grow flex-col items-center justify-end px-4 hover:bg-black/10 dark:hover:bg-white/10"
+              className="flex h-13.25 min-w-14 grow flex-col items-center justify-end px-4 hover:bg-black/10 dark:hover:bg-white/10"
             >
               {({ isActive }) => (
-                <>
-                  <div
-                    className={classNames(
-                      "py-4",
-                      isActive
-                        ? "text-black dark:text-white"
-                        : "text-gray-500 dark:text-gray-400",
-                    )}
-                  >
-                    Posts
-                  </div>
-                  {isActive && (
-                    <div className="bg-primary absolute bottom-0 h-1 min-w-14 self-center rounded-full"></div>
+                <div
+                  className={classNames(
+                    "relative flex h-full items-center justify-center py-4",
+                    isActive
+                      ? "font-bold text-black dark:text-white"
+                      : "text-gray-500 dark:text-gray-400",
                   )}
-                </>
+                >
+                  <div>Posts</div>
+                  {isActive && (
+                    <div className="bg-primary absolute bottom-0 h-1 w-full min-w-14 self-center rounded-full"></div>
+                  )}
+                </div>
               )}
             </NavLink>
             <NavLink
               to={`/users/${user.id}/replies`}
-              className="relative flex h-13.25 min-w-14 grow flex-col items-center justify-end px-4 hover:bg-black/10 dark:hover:bg-white/10"
+              className="flex h-13.25 min-w-14 grow flex-col items-center justify-end px-4 hover:bg-black/10 dark:hover:bg-white/10"
             >
               {({ isActive }) => (
-                <>
-                  <div
-                    className={classNames(
-                      "py-4",
-                      isActive
-                        ? "text-black dark:text-white"
-                        : "text-gray-500 dark:text-gray-400",
-                    )}
-                  >
-                    Replies
-                  </div>
-                  {isActive && (
-                    <div className="bg-primary absolute bottom-0 h-1 min-w-14 self-center rounded-full"></div>
+                <div
+                  className={classNames(
+                    "relative flex h-full items-center justify-center py-4",
+                    isActive
+                      ? "font-bold text-black dark:text-white"
+                      : "text-gray-500 dark:text-gray-400",
                   )}
-                </>
+                >
+                  <div>Replies</div>
+                  {isActive && (
+                    <div className="bg-primary absolute bottom-0 h-1 w-full min-w-14 self-center rounded-full"></div>
+                  )}
+                </div>
               )}
             </NavLink>
             <NavLink
               to={`/users/${user.id}/reposts`}
-              className="relative flex h-13.25 min-w-14 grow flex-col items-center justify-end px-4 hover:bg-black/10 dark:hover:bg-white/10"
+              className="flex h-13.25 min-w-14 grow flex-col items-center justify-end px-4 hover:bg-black/10 dark:hover:bg-white/10"
             >
               {({ isActive }) => (
-                <>
-                  <div
-                    className={classNames(
-                      "py-4",
-                      isActive
-                        ? "text-black dark:text-white"
-                        : "text-gray-500 dark:text-gray-400",
-                    )}
-                  >
-                    Reposts
-                  </div>
-                  {isActive && (
-                    <div className="bg-primary absolute bottom-0 h-1 min-w-14 self-center rounded-full"></div>
+                <div
+                  className={classNames(
+                    "relative flex h-full items-center justify-center py-4",
+                    isActive
+                      ? "font-bold text-black dark:text-white"
+                      : "text-gray-500 dark:text-gray-400",
                   )}
-                </>
+                >
+                  <div>Reposts</div>
+                  {isActive && (
+                    <div className="bg-primary absolute bottom-0 h-1 w-full min-w-14 self-center rounded-full"></div>
+                  )}
+                </div>
               )}
             </NavLink>
           </nav>
