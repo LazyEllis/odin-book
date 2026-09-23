@@ -110,12 +110,12 @@ const AppLayout = () => {
           )}
         </NavLink>
         <NavLink
-          to="/bookmarks"
+          to="/history"
           className="flex grow flex-col items-center justify-center"
         >
           {({ isActive }) => (
             <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
-              <span className="sr-only">Bookmarks</span>
+              <span className="sr-only">History</span>
               <BookmarkIcon
                 className={classNames(
                   "inline-block size-7 max-w-full",
@@ -243,12 +243,12 @@ const AppLayout = () => {
                       Profile
                     </Link>
                     <Link
-                      to={`/bookmarks`}
+                      to="/history"
                       onClick={handleClose}
                       className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                     >
                       <BookmarkIcon className="mr-6 size-6 stroke-2" />
-                      Bookmarks
+                      History
                     </Link>
                     <button
                       onClick={logout}
