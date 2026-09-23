@@ -72,3 +72,9 @@ export const getUserReplies = (userId: number): Promise<PostPublic[]> =>
 
 export const getUserReposts = (userId: number): Promise<PostPublic[]> =>
   request(`/users/${userId}/reposts`);
+
+export const getCurrentUserLikes = (): Promise<PostPublic[]> =>
+  request(`/users/me/likes`);
+
+export const getBookmarks = (): Promise<PostPublic[]> =>
+  request(`/users/me/bookmarks`);

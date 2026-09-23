@@ -1,5 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import {
+  getBookmarks,
+  getCurrentUserLikes,
   getUserPosts,
   getUserReplies,
   getUserReposts,
@@ -23,3 +25,9 @@ export const getUserPostsOptions = (userId: number, path: string) => {
     });
   }
 };
+
+export const getHistoryPostsOptions = (path: string) =>
+  queryOptions({
+    queryKey: ["users", "me", path === "/history" ? "bookmarks" : "likes"],
+    queryFn: path === "/history" ? getBookmarks : getCurrentUserLikes,
+  });

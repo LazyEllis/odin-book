@@ -4,6 +4,7 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import History from "./pages/History";
 
 const routes = (isAuth: boolean): RouteObject[] => [
   {
@@ -14,6 +15,8 @@ const routes = (isAuth: boolean): RouteObject[] => [
       { path: "/users/:userId", element: <Profile /> },
       { path: "/users/:userId/replies", element: <Profile /> },
       { path: "/users/:userId/reposts", element: <Profile /> },
+      { path: "/history", element: <History /> },
+      { path: "/history/likes", element: <History /> },
     ],
   },
   {
