@@ -5,6 +5,7 @@ import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import History from "./pages/History";
+import Users from "./pages/Users";
 
 const routes = (isAuth: boolean): RouteObject[] => [
   {
@@ -12,6 +13,7 @@ const routes = (isAuth: boolean): RouteObject[] => [
     element: isAuth ? <AppLayout /> : <Navigate to="/sign-in" />,
     children: [
       { index: true, element: <Home /> },
+      { path: "/users", element: <Users /> },
       { path: "/users/:userId", element: <Profile /> },
       { path: "/users/:userId/replies", element: <Profile /> },
       { path: "/users/:userId/reposts", element: <Profile /> },
