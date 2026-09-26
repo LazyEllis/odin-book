@@ -112,7 +112,7 @@ const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {
   return (
     <div className="border-b border-black/10 dark:border-white/20">
       <article className="flex cursor-pointer overflow-hidden px-4 py-3 hover:bg-black/3 dark:hover:bg-white/3">
-        <div className="mr-2 grow-0 basis-10 items-center">
+        <div className="mr-2 shrink-0 grow-0 basis-10 items-center">
           <Link
             aria-hidden
             tabIndex={-1}
@@ -126,21 +126,25 @@ const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {
             />
           </Link>
         </div>
-        <div className="grow basis-0 justify-center">
+        <div className="min-w-0 flex-1 justify-center">
           <div className="mb-0.5">
             <div className="flex items-start justify-between">
-              <div>
+              <div className="min-w-0">
                 <Link
                   to={`/users/${post.author.id}`}
-                  className="font-bold hover:underline"
+                  className="block truncate font-bold hover:underline"
                 >
                   {post.author.name}
                 </Link>
-                <div className="text-gray-500 dark:text-gray-400">
-                  <Link to={`/users/${post.author.id}`}>
+                <div className="flex text-gray-500 dark:text-gray-400">
+                  <Link
+                    className="flex-1 truncate"
+                    to={`/users/${post.author.id}`}
+                  >
                     @{post.author.username}
-                  </Link>{" "}
-                  · {formatTimestamp(post.createdAt)}
+                  </Link>
+                  <div className="px-1">·</div>
+                  <div>{formatTimestamp(post.createdAt)}</div>
                 </div>
               </div>
             </div>

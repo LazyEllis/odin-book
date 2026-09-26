@@ -67,9 +67,9 @@ const Profile = () => {
               />
             </div>
             <div className="flex min-w-0 flex-1 items-center justify-end pb-1">
-              <div className="flex min-w-26 flex-row justify-stretch space-x-4">
+              <div className="flex flex-row justify-stretch space-x-4">
                 {isCurrentUser ? (
-                  <button className="inline-flex w-full cursor-pointer items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-black shadow-xs outline-1 outline-offset-1 outline-black hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-black dark:text-white dark:shadow-none dark:outline-white dark:hover:bg-white/10">
+                  <button className="inline-flex cursor-pointer items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-black shadow-xs outline-1 outline-offset-1 outline-black hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-black dark:text-white dark:shadow-none dark:outline-white dark:hover:bg-white/10">
                     Edit profile
                   </button>
                 ) : (
@@ -77,9 +77,9 @@ const Profile = () => {
                     onClick={handleFollowToggle}
                     disabled={mutation.isPending}
                     className={classNames(
-                      "inline-flex size-full cursor-pointer items-center justify-center rounded-full px-4 py-2 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 dark:shadow-none",
+                      "inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-2 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 dark:shadow-none",
                       user.connectionStatus.isFollowing
-                        ? "group bg-white text-black outline-1 outline-offset-1 outline-black hover:text-[#f4212e] hover:outline-[#67070f] dark:bg-black dark:text-white dark:outline-white"
+                        ? "group min-w-26 bg-white text-black outline-1 outline-offset-1 outline-black hover:text-[#f4212e] hover:outline-[#67070f] dark:bg-black dark:text-white dark:outline-white"
                         : "bg-black text-white hover:bg-black/90 focus-visible:outline-black dark:bg-white dark:text-black dark:hover:bg-white/90 dark:focus-visible:outline-white",
                     )}
                   >
@@ -97,7 +97,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="mt-6 min-w-0 flex-1">
-            <h1 className="text-truncate text-2xl font-bold text-black dark:text-white">
+            <h1 className="truncate text-2xl font-bold text-black dark:text-white">
               {user.name}
             </h1>
             <div className="text-gray-500 dark:text-gray-400">
