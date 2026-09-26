@@ -1,14 +1,15 @@
 import { Link, NavLink, useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LinkIcon, MapPinIcon } from "@heroicons/react/24/outline";
-import { getUserById } from "../lib/api-client";
+import { followUser, getUserById, unfollowUser } from "../lib/api-client";
 import { classNames, formatURL } from "../utils/format";
 import useCurrentUser from "../hooks/useCurrentUser";
 import ProfilePostList from "../components/ProfilePostList";
+import type { UserPublic } from "../interfaces/api";
 
 const Profile = () => {
   const { userId } = useParams();
-
+  const queryClient = useQueryClient();
   const { data: currentUser } = useCurrentUser();
 
   const {
@@ -20,11 +21,37 @@ const Profile = () => {
     queryFn: () => getUserById(Number(userId)),
   });
 
+  const mutation = useMutation({
+    mutationFn: user?.connectionStatus.isFollowing ? unfollowUser : followUser,
+    onSuccess: () => {
+      queryClient.setQueryData(
+        ["users", Number(userId)],
+        (user: UserPublic) => ({
+          ...user,
+          _count: {
+            ...user._count,
+            followers: user.connectionStatus.isFollowing
+              ? user._count.followers - 1
+              : user._count.followers + 1,
+          },
+          connectionStatus: {
+            ...user.connectionStatus,
+            isFollowing: !user.connectionStatus.isFollowing,
+          },
+        }),
+      );
+    },
+  });
+
+  const handleFollowToggle = () => {
+    mutation.mutate(Number(userId));
+  };
+
+  const isCurrentUser = currentUser?.id === user?.id;
+
   if (isPending) return <div>Loading...</div>;
 
   if (error) return <div>{error.message}</div>;
-
-  const isCurrentUser = currentUser?.id === user.id;
 
   return (
     <>
@@ -40,14 +67,30 @@ const Profile = () => {
               />
             </div>
             <div className="flex min-w-0 flex-1 items-center justify-end pb-1">
-              <div className="flex flex-row justify-stretch space-x-4">
+              <div className="flex min-w-26 flex-row justify-stretch space-x-4">
                 {isCurrentUser ? (
-                  <button className="inline-flex cursor-pointer items-center rounded-full border-black bg-white px-4 py-2 text-sm font-semibold text-black shadow-xs outline-1 outline-offset-1 outline-black hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-black dark:text-white dark:shadow-none dark:outline-white dark:hover:bg-white/10">
+                  <button className="inline-flex w-full cursor-pointer items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-black shadow-xs outline-1 outline-offset-1 outline-black hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-black dark:text-white dark:shadow-none dark:outline-white dark:hover:bg-white/10">
                     Edit profile
                   </button>
                 ) : (
-                  <button className="inline-flex cursor-pointer items-center rounded-full bg-black px-4 py-2 text-sm font-semibold text-white shadow-xs hover:bg-black/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-white dark:text-black dark:shadow-none dark:hover:bg-white/90 dark:focus-visible:outline-white">
-                    Follow
+                  <button
+                    onClick={handleFollowToggle}
+                    disabled={mutation.isPending}
+                    className={classNames(
+                      "inline-flex size-full cursor-pointer items-center justify-center rounded-full px-4 py-2 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 dark:shadow-none",
+                      user.connectionStatus.isFollowing
+                        ? "group bg-white text-black outline-1 outline-offset-1 outline-black hover:text-[#f4212e] hover:outline-[#67070f] dark:bg-black dark:text-white dark:outline-white"
+                        : "bg-black text-white hover:bg-black/90 focus-visible:outline-black dark:bg-white dark:text-black dark:hover:bg-white/90 dark:focus-visible:outline-white",
+                    )}
+                  >
+                    {user.connectionStatus.isFollowing ? (
+                      <>
+                        <div className="group-hover:hidden">Following</div>
+                        <div className="hidden group-hover:block">Unfollow</div>
+                      </>
+                    ) : (
+                      <>Follow</>
+                    )}
                   </button>
                 )}
               </div>

@@ -78,3 +78,9 @@ export const getCurrentUserLikes = (): Promise<PostPublic[]> =>
 
 export const getBookmarks = (): Promise<PostPublic[]> =>
   request(`/users/me/bookmarks`);
+
+export const followUser = (userId: number): Promise<void> =>
+  request(`/users/me/following/${userId}`, { method: "PUT" });
+
+export const unfollowUser = (userId: number): Promise<void> =>
+  request(`/users/me/following/${userId}`, { method: "DELETE" });
