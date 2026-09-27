@@ -1,9 +1,9 @@
 import { createContext } from "react";
 
-interface IContextProps {
+interface Props {
   isAuth: boolean;
   login: (token: string) => void;
   logout: () => void;
 }
 
-export const AuthContext = createContext({} as IContextProps);
+export const AuthContext = createContext({} as Props);

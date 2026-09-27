@@ -1,11 +1,11 @@
 import type { FC } from "react";
 import { classNames } from "../utils/format";
 
-interface IComponentProps {
+interface Props {
   isButton?: boolean;
 }
 
-const Loader: FC<IComponentProps> = ({ isButton }) => (
+const Loader: FC<Props> = ({ isButton }) => (
   <svg
     className={classNames(
       "mr-3 -ml-1 size-5 animate-spin",

@@ -18,12 +18,12 @@ import {
   unrepostPost,
 } from "../lib/api-client";
 
-interface IComponentProps {
+interface Props {
   post: PostPublic;
   queryKey: unknown[];
 }
 
-const TimelinePost: FC<IComponentProps> = ({ post, queryKey }) => {
+const TimelinePost: FC<Props> = ({ post, queryKey }) => {
   const queryClient = useQueryClient();
 
   const repostMutation = useMutation({
