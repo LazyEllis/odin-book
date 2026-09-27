@@ -9,6 +9,7 @@
     "test": "vitest",
     "lint": "eslint .",
     "format": "prettier . --write",
+    "typecheck": "tsc -b",
     "preview": "vite preview"
   },
   "dependencies": {
