@@ -62,7 +62,10 @@ const AppLayout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
-      <nav className="flex h-14 max-h-[16vh] flex-row border-t border-black/10 dark:border-white/20">
+      <nav
+        className="flex h-14 max-h-[16vh] flex-row border-t border-black/10 dark:border-white/20"
+        aria-label="primary"
+      >
         <NavLink
           to="/"
           className="flex grow flex-col items-center justify-center"
@@ -181,17 +184,23 @@ const AppLayout = () => {
                     <div className="mb-3">
                       <Link
                         to={`/users/${user.id}`}
+                        onClick={handleClose}
                         className="block w-fit font-bold hover:underline"
                       >
                         {user.name}
                       </Link>
-                      <Link to={`/users/${user.id}`} className="block w-fit">
+                      <Link
+                        to={`/users/${user.id}`}
+                        onClick={handleClose}
+                        className="block w-fit"
+                      >
                         @{user.username}
                       </Link>
                     </div>
                     <div className="flex gap-5 text-sm">
                       <Link
                         to={`/users/${user.id}/following`}
+                        onClick={handleClose}
                         className="hover:underline"
                       >
                         <span className="font-bold">
@@ -201,6 +210,7 @@ const AppLayout = () => {
                       </Link>
                       <Link
                         to={`/users/${user.id}/followers`}
+                        onClick={handleClose}
                         className="hover:underline"
                       >
                         <span className="font-bold">

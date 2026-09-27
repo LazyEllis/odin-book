@@ -5,6 +5,7 @@ import HistoryPostList from "../components/HistoryPostList";
 
 const History = () => (
   <>
+    <h1 className="sr-only">History</h1>
     <nav className="flex items-center border-b border-white/20">
       <NavLink
         to="/history"
