@@ -3,6 +3,9 @@ import {
   getBookmarks,
   getCurrentUser,
   getCurrentUserLikes,
+  getUserById,
+  getUserFollowers,
+  getUserFollowing,
   getUserPosts,
   getUserReplies,
   getUserReposts,
@@ -12,6 +15,12 @@ export const currentUserOptions = queryOptions({
   queryFn: getCurrentUser,
   queryKey: ["users", "me"],
 });
+
+export const getUserOptions = (userId: number) =>
+  queryOptions({
+    queryKey: ["users", Number(userId)],
+    queryFn: () => getUserById(Number(userId)),
+  });
 
 export const getUserPostsOptions = (userId: number, path: string) => {
   if (path === `/users/${userId}`) {
@@ -31,6 +40,17 @@ export const getUserPostsOptions = (userId: number, path: string) => {
     });
   }
 };
+
+export const getUserFollowsOptions = (userId: number, path: string) =>
+  path === `/users/${userId}/following`
+    ? queryOptions({
+        queryKey: ["users", userId, "following"],
+        queryFn: () => getUserFollowing(userId),
+      })
+    : queryOptions({
+        queryKey: ["users", userId, "followers"],
+        queryFn: () => getUserFollowers(userId),
+      });
 
 export const getHistoryPostsOptions = (path: string) =>
   queryOptions({
