@@ -144,7 +144,9 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
                     @{post.author.username}
                   </Link>
                   <div className="px-1">·</div>
-                  <div>{formatTimestamp(post.createdAt)}</div>
+                  <time dateTime={post.createdAt}>
+                    {formatTimestamp(post.createdAt)}
+                  </time>
                 </div>
               </div>
             </div>
