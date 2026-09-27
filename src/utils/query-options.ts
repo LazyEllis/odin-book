@@ -1,11 +1,17 @@
 import { queryOptions } from "@tanstack/react-query";
 import {
   getBookmarks,
+  getCurrentUser,
   getCurrentUserLikes,
   getUserPosts,
   getUserReplies,
   getUserReposts,
 } from "../lib/api-client";
+
+export const currentUserOptions = queryOptions({
+  queryFn: getCurrentUser,
+  queryKey: ["users", "me"],
+});
 
 export const getUserPostsOptions = (userId: number, path: string) => {
   if (path === `/users/${userId}`) {

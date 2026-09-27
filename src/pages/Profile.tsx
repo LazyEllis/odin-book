@@ -1,17 +1,18 @@
 import { Link, NavLink, useParams } from "react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LinkIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import type { UserPublic } from "../interfaces/api";
 import { followUser, getUserById, unfollowUser } from "../lib/api-client";
 import { classNames, formatURL } from "../utils/format";
-import useCurrentUser from "../hooks/useCurrentUser";
+import { currentUserOptions } from "../utils/query-options";
+
 import ProfilePostList from "../components/ProfilePostList";
-import type { UserPublic } from "../interfaces/api";
 
 const Profile = () => {
   const { userId } = useParams();
   const queryClient = useQueryClient();
-  const { data: currentUser } = useCurrentUser();
 
+  const { data: currentUser } = useQuery(currentUserOptions);
   const {
     isPending,
     error,
@@ -39,6 +40,20 @@ const Profile = () => {
             isFollowing: !user.connectionStatus.isFollowing,
           },
         }),
+      );
+
+      queryClient.setQueryData(
+        currentUserOptions.queryKey,
+        (currentUser) =>
+          currentUser && {
+            ...currentUser,
+            _count: {
+              ...currentUser._count,
+              following: user?.connectionStatus.isFollowing
+                ? currentUser._count.following - 1
+                : currentUser._count.following + 1,
+            },
+          },
       );
     },
   });

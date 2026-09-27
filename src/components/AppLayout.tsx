@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, Outlet } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 import {
   Dialog,
   DialogBackdrop,
@@ -16,15 +17,15 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon as HomeSolidIcon } from "@heroicons/react/24/solid";
+import { currentUserOptions } from "../utils/query-options";
 import { classNames } from "../utils/format";
 import useAuth from "../hooks/useAuth";
-import useCurrentUser from "../hooks/useCurrentUser";
 import Logo from "./Logo";
 
 const AppLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { error, data: user } = useCurrentUser();
+  const { error, data: user } = useQuery(currentUserOptions);
   const { logout } = useAuth();
 
   const handleOpen = () => setIsOpen(true);

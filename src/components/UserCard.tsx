@@ -1,10 +1,10 @@
 import type { FC } from "react";
 import { Link } from "react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { UserPublic } from "../interfaces/api";
 import { followUser, unfollowUser } from "../lib/api-client";
+import { currentUserOptions } from "../utils/query-options";
 import { classNames } from "../utils/format";
-import useCurrentUser from "../hooks/useCurrentUser";
 
 interface Props {
   user: UserPublic;
@@ -14,10 +14,10 @@ interface Props {
 const UserCard: FC<Props> = ({ user, queryKey }) => {
   const queryClient = useQueryClient();
 
-  const { data: currentUser } = useCurrentUser();
+  const { data: currentUser } = useQuery(currentUserOptions);
 
   const mutation = useMutation({
-    mutationFn: user?.connectionStatus.isFollowing ? unfollowUser : followUser,
+    mutationFn: user.connectionStatus.isFollowing ? unfollowUser : followUser,
     onSuccess: () => {
       queryClient.setQueryData(queryKey, (users: UserPublic[]) =>
         users.map((u) =>
@@ -37,6 +37,20 @@ const UserCard: FC<Props> = ({ user, queryKey }) => {
               }
             : u,
         ),
+      );
+
+      queryClient.setQueryData(
+        currentUserOptions.queryKey,
+        (currentUser) =>
+          currentUser && {
+            ...currentUser,
+            _count: {
+              ...currentUser._count,
+              following: user.connectionStatus.isFollowing
+                ? currentUser._count.following - 1
+                : currentUser._count.following + 1,
+            },
+          },
       );
     },
   });
