@@ -6,6 +6,7 @@ import type { InputProps } from "../interfaces/props";
 import Input from "../components/Input";
 import Loader from "../components/Loader";
 import ErrorAlert from "../components/ErrorAlert";
+import type { UserCreate } from "../interfaces/api";
 
 const inputFields: InputProps[] = [
   { name: "name", label: "Name", type: "text" },
@@ -56,6 +57,7 @@ const SignUp = () => {
             <Input
               {...field}
               required
+              value={formData[field.name as keyof UserCreate]}
               onChange={handleChange}
               key={field.name}
             />

@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, type SubmitEvent } from "react";
 import { Link } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { generateToken } from "../lib/api-client";
+import type { Credentials } from "../interfaces/api";
 import type { InputProps } from "../interfaces/props";
 import Input from "../components/Input";
 import Loader from "../components/Loader";
@@ -50,6 +51,7 @@ const SignIn = () => {
             <Input
               {...field}
               required
+              value={formData[field.name as keyof Credentials]}
               onChange={handleChange}
               key={field.name}
             />
