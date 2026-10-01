@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, NavLink, useParams } from "react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LinkIcon, MapPinIcon } from "@heroicons/react/24/outline";
@@ -5,10 +6,12 @@ import type { UserPublic } from "../interfaces/api";
 import { followUser, getUserById, unfollowUser } from "../lib/api-client";
 import { classNames, formatURL } from "../utils/format";
 import { currentUserOptions } from "../utils/query-options";
-
 import ProfilePostList from "../components/ProfilePostList";
+import ProfileEditForm from "../components/ProfileEditForm";
 
 const Profile = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const { userId } = useParams();
   const queryClient = useQueryClient();
 
@@ -58,6 +61,10 @@ const Profile = () => {
     },
   });
 
+  const handleOpen = () => setIsOpen(true);
+
+  const handleClose = () => setIsOpen(false);
+
   const handleFollowToggle = () => {
     mutation.mutate(Number(userId));
   };
@@ -84,7 +91,10 @@ const Profile = () => {
             <div className="flex min-w-0 flex-1 items-center justify-end pb-1">
               <div className="flex flex-row justify-stretch space-x-4">
                 {isCurrentUser ? (
-                  <button className="inline-flex cursor-pointer items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-black shadow-xs outline-1 outline-offset-1 outline-black hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-black dark:text-white dark:shadow-none dark:outline-white dark:hover:bg-white/10">
+                  <button
+                    onClick={handleOpen}
+                    className="inline-flex cursor-pointer items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-black shadow-xs outline-1 outline-offset-1 outline-black hover:bg-black/10 focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-black dark:text-white dark:shadow-none dark:outline-white dark:hover:bg-white/10"
+                  >
                     Edit profile
                   </button>
                 ) : (
@@ -235,6 +245,12 @@ const Profile = () => {
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <ProfilePostList user={user} isCurrentUser={isCurrentUser} />
       </div>
+
+      <ProfileEditForm
+        initialData={user}
+        isOpen={isOpen}
+        onClose={handleClose}
+      />
     </>
   );
 };

@@ -4,6 +4,7 @@ import type {
   Token,
   UserCreate,
   UserPublic,
+  UserUpdate,
 } from "../interfaces/api";
 
 const baseURL = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -17,9 +18,7 @@ const request = async (endpoint: string, options: RequestInit = {}) => {
 
   const token = localStorage.getItem("token");
   if (token) {
-    options.headers = {
-      Authorization: `Bearer ${token}`,
-    };
+    options.headers.Authorization = `Bearer ${token}`;
   }
 
   const response = await fetch(url, options);
@@ -45,6 +44,9 @@ export const getUserById = (userId: number): Promise<UserPublic> =>
   request(`/users/${userId}`);
 
 export const getCurrentUser = (): Promise<UserPublic> => request("/users/me");
+
+export const updateCurrentUser = (userData: UserUpdate): Promise<UserPublic> =>
+  request("/users/me", { method: "PUT", body: JSON.stringify(userData) });
 
 export const listPosts = (): Promise<PostPublic[]> => request("/posts");
 
