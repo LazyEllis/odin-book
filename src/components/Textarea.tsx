@@ -1,7 +1,7 @@
 import type { FC } from "react";
-import type { InputProps } from "../interfaces/props";
+import type { TextareaProps } from "../interfaces/props";
 
-const Input: FC<InputProps> = ({ name, label, ...props }) => (
+const Textarea: FC<TextareaProps> = ({ name, label, ...props }) => (
   <div>
     <label
       htmlFor={name}
@@ -10,7 +10,7 @@ const Input: FC<InputProps> = ({ name, label, ...props }) => (
       {label}
     </label>
     <div className="mt-2">
-      <input
+      <textarea
         id={name}
         name={name}
         {...props}
@@ -20,4 +20,4 @@ const Input: FC<InputProps> = ({ name, label, ...props }) => (
   </div>
 );
 
-export default Input;
+export default Textarea;
