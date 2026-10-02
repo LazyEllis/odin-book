@@ -67,7 +67,7 @@ const ProfileEditForm: FC<Props> = ({ initialData, isOpen, onClose }) => {
     >
       <DialogBackdrop
         transition
-        className="fixed inset-0 bg-gray-900/50 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
+        className="darK:bg-gray-900/50 fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
       />
 
       <div
@@ -76,19 +76,20 @@ const ProfileEditForm: FC<Props> = ({ initialData, isOpen, onClose }) => {
       >
         <DialogPanel
           transition
-          className="relative transform overflow-hidden rounded-lg bg-gray-800 text-left shadow-xl outline -outline-offset-1 outline-white/10 transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95"
+          className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl outline -outline-offset-1 outline-white/10 transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95 dark:bg-gray-800"
         >
           <form onSubmit={handleSubmit}>
-            <div className="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 dark:bg-gray-800">
               <DialogTitle
                 as="h2"
-                className="text-base font-semibold text-white"
+                className="text-base font-semibold text-black dark:text-white"
               >
                 Edit Profile
               </DialogTitle>
 
               <div className="mt-3 space-y-6">
                 {mutation.error && <ErrorAlert error={mutation.error} />}
+
                 {inputFields.map((field) => (
                   <Input
                     {...field}
@@ -100,15 +101,15 @@ const ProfileEditForm: FC<Props> = ({ initialData, isOpen, onClose }) => {
                 ))}
               </div>
             </div>
-            <div className="bg-gray-700/25 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <button className="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-black/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black sm:ml-3 sm:w-auto dark:bg-white dark:text-black dark:shadow-none dark:hover:bg-white/90 dark:focus-visible:outline-white">
+            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 dark:bg-gray-700/25">
+              <button className="inline-flex w-full justify-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-black/75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black sm:ml-3 sm:w-auto dark:bg-white dark:text-black dark:shadow-none dark:hover:bg-white/90 dark:focus-visible:outline-white">
                 {mutation.isPending && <Loader isButton />}{" "}
                 {mutation.isPending ? "Saving..." : "Save"}
               </button>
               <button
                 type="button"
                 onClick={handleClose}
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20 sm:mt-0 sm:w-auto"
+                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto dark:bg-white/10 dark:text-white dark:inset-ring-white/5 dark:hover:bg-white/20"
               >
                 Cancel
               </button>
