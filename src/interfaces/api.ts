@@ -61,8 +61,8 @@ interface PostBase {
 }
 
 export interface PostCreate extends PostBase {
-  inReplyToPostId: number;
-  quotedPostId: number;
+  inReplyToPostId: number | null;
+  quotedPostId: number | null;
 }
 
 export interface PostPublic extends PostBase {

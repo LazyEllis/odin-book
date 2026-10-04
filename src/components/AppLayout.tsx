@@ -12,6 +12,7 @@ import {
   BookmarkIcon,
   HomeIcon,
   MagnifyingGlassIcon,
+  PencilSquareIcon,
   UserIcon,
   UserPlusIcon,
   XMarkIcon,
@@ -21,16 +22,22 @@ import { currentUserOptions } from "../utils/query-options";
 import { classNames } from "../utils/format";
 import useAuth from "../hooks/useAuth";
 import Logo from "./Logo";
+import PostForm from "./PostForm";
 
 const AppLayout = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { error, data: user } = useQuery(currentUserOptions);
   const { logout } = useAuth();
 
-  const handleOpen = () => setIsOpen(true);
+  const handleMenuOpen = () => setIsMenuOpen(true);
 
-  const handleClose = () => setIsOpen(false);
+  const handleMenuClose = () => setIsMenuOpen(false);
+
+  const handleModalOpen = () => setIsModalOpen(true);
+
+  const handleModalClose = () => setIsModalOpen(false);
 
   useEffect(() => {
     if (error?.message === "Unauthorized") {
@@ -44,7 +51,7 @@ const AppLayout = () => {
     <div className="flex h-full flex-col">
       <header className="mx-auto flex h-13.25 w-full flex-row items-center justify-between border-b border-black/10 px-4 dark:border-white/20">
         <button
-          onClick={handleOpen}
+          onClick={handleMenuOpen}
           className="focus-visible:outline-primary relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           <span className="sr-only">Open user menu</span>
@@ -62,6 +69,20 @@ const AppLayout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
+
+      <aside aria-label="Compose a post" className="relative flex flex-col">
+        <div className="relative top-[calc(env(safe-area-inset-bottom)-53-20px)] right-5 bottom-5 self-end">
+          <button
+            onClick={handleModalOpen}
+            className="bg-bookmark hover:bg-bookmark/90 flex size-14 cursor-pointer items-center justify-center rounded-full shadow-xs"
+          >
+            <span className="sr-only">Compose a post</span>
+            <PencilSquareIcon className="size-6 text-white" />
+          </button>
+          <PostForm isOpen={isModalOpen} onClose={handleModalClose} />
+        </div>
+      </aside>
+
       <nav
         className="flex h-14 max-h-[16vh] flex-row border-t border-black/10 dark:border-white/20"
         aria-label="primary"
@@ -140,7 +161,11 @@ const AppLayout = () => {
         </button>
       </nav>
 
-      <Dialog open={isOpen} onClose={handleClose} className="relative z-10">
+      <Dialog
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+        className="relative z-10"
+      >
         <DialogBackdrop
           transition
           className="fixed inset-0 bg-gray-500/75 transition-opacity duration-500 ease-in-out data-closed:opacity-0 dark:bg-gray-900/50"
@@ -157,7 +182,7 @@ const AppLayout = () => {
                   <div className="absolute top-0 right-0 -mr-8 flex pt-4 pl-2 duration-500 ease-in-out data-closed:opacity-0 sm:-mr-10 sm:pl-4">
                     <button
                       type="button"
-                      onClick={handleClose}
+                      onClick={handleMenuClose}
                       className="focus-visible:outline-primary relative rounded-md text-gray-300 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 dark:text-gray-400 dark:hover:text-white"
                     >
                       <span className="absolute -inset-2.5" />
@@ -184,14 +209,14 @@ const AppLayout = () => {
                     <div className="mb-3">
                       <Link
                         to={`/users/${user.id}`}
-                        onClick={handleClose}
+                        onClick={handleMenuClose}
                         className="block w-fit font-bold hover:underline"
                       >
                         {user.name}
                       </Link>
                       <Link
                         to={`/users/${user.id}`}
-                        onClick={handleClose}
+                        onClick={handleMenuClose}
                         className="block w-fit"
                       >
                         @{user.username}
@@ -200,7 +225,7 @@ const AppLayout = () => {
                     <div className="flex gap-5 text-sm">
                       <Link
                         to={`/users/${user.id}/following`}
-                        onClick={handleClose}
+                        onClick={handleMenuClose}
                         className="hover:underline"
                       >
                         <span className="font-bold">
@@ -210,7 +235,7 @@ const AppLayout = () => {
                       </Link>
                       <Link
                         to={`/users/${user.id}/followers`}
-                        onClick={handleClose}
+                        onClick={handleMenuClose}
                         className="hover:underline"
                       >
                         <span className="font-bold">
@@ -223,7 +248,7 @@ const AppLayout = () => {
                   <div className="relative mt-6 flex flex-1 flex-col">
                     <Link
                       to="/"
-                      onClick={handleClose}
+                      onClick={handleMenuClose}
                       className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                     >
                       <HomeIcon className="mr-6 size-6 stroke-2" />
@@ -231,7 +256,7 @@ const AppLayout = () => {
                     </Link>
                     <Link
                       to="/explore"
-                      onClick={handleClose}
+                      onClick={handleMenuClose}
                       className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                     >
                       <MagnifyingGlassIcon className="mr-6 size-6 stroke-2" />
@@ -239,7 +264,7 @@ const AppLayout = () => {
                     </Link>
                     <Link
                       to="/users"
-                      onClick={handleClose}
+                      onClick={handleMenuClose}
                       className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                     >
                       <UserPlusIcon className="mr-6 size-6 stroke-2" />
@@ -247,7 +272,7 @@ const AppLayout = () => {
                     </Link>
                     <Link
                       to={`/users/${user.id}`}
-                      onClick={handleClose}
+                      onClick={handleMenuClose}
                       className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                     >
                       <UserIcon className="mr-6 size-6 stroke-2" />
@@ -255,7 +280,7 @@ const AppLayout = () => {
                     </Link>
                     <Link
                       to="/history"
-                      onClick={handleClose}
+                      onClick={handleMenuClose}
                       className="flex items-center p-4 text-xl font-bold hover:bg-black/10 dark:hover:bg-white/10"
                     >
                       <BookmarkIcon className="mr-6 size-6 stroke-2" />

@@ -1,5 +1,6 @@
 import type {
   Credentials,
+  PostCreate,
   PostPublic,
   Token,
   UserCreate,
@@ -47,6 +48,9 @@ export const getCurrentUser = (): Promise<UserPublic> => request("/users/me");
 
 export const updateCurrentUser = (userData: UserUpdate): Promise<UserPublic> =>
   request("/users/me", { method: "PUT", body: JSON.stringify(userData) });
+
+export const createPost = (postData: PostCreate): Promise<UserPublic> =>
+  request("/posts", { method: "POST", body: JSON.stringify(postData) });
 
 export const listPosts = (): Promise<PostPublic[]> => request("/posts");
 
