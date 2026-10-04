@@ -137,10 +137,7 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
                   {post.author.name}
                 </Link>
                 <div className="flex text-gray-500 dark:text-gray-400">
-                  <Link
-                    className="flex-1 truncate"
-                    to={`/users/${post.author.id}`}
-                  >
+                  <Link className="truncate" to={`/users/${post.author.id}`}>
                     @{post.author.username}
                   </Link>
                   <div className="px-1">·</div>
