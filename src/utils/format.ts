@@ -41,3 +41,6 @@ export const pastTense = (resource: string) => {
     return "reposted";
   }
 };
+
+export const continuousTense = (word: string) =>
+  word.endsWith("e") ? `${word.slice(0, -1)}ing...` : `${word}ing...`;
