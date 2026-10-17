@@ -1,5 +1,5 @@
-import type { FC } from "react";
-import { Link } from "react-router";
+import type { FC, MouseEvent } from "react";
+import { Link, useNavigate } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   ChatBubbleOvalLeftIcon,
@@ -24,6 +24,7 @@ interface Props {
 }
 
 const TimelinePost: FC<Props> = ({ post, queryKey }) => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const repostMutation = useMutation({
@@ -103,20 +104,41 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
     },
   });
 
-  const handleRepostToggle = () => repostMutation.mutate(post.id);
+  const handlePostClick = () => navigate(`/posts/${post.id}`);
 
-  const handleLikeToggle = () => likeMutation.mutate(post.id);
+  const handleLinkClick = (e: MouseEvent) => e.stopPropagation();
 
-  const handleBookmarkToggle = () => bookmarkMutation.mutate(post.id);
+  const handleReplyToggle = (e: MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  const handleRepostToggle = (e: MouseEvent) => {
+    e.stopPropagation();
+    repostMutation.mutate(post.id);
+  };
+
+  const handleLikeToggle = (e: MouseEvent) => {
+    e.stopPropagation();
+    likeMutation.mutate(post.id);
+  };
+
+  const handleBookmarkToggle = (e: MouseEvent) => {
+    e.stopPropagation();
+    bookmarkMutation.mutate(post.id);
+  };
 
   return (
     <div className="border-b border-black/10 dark:border-white/20">
-      <article className="flex cursor-pointer overflow-hidden px-4 py-3 hover:bg-black/3 dark:hover:bg-white/3">
+      <article
+        onClick={handlePostClick}
+        className="flex cursor-pointer overflow-hidden px-4 py-3 hover:bg-black/3 dark:hover:bg-white/3"
+      >
         <div className="mr-2 shrink-0 grow-0 basis-10 items-center">
           <Link
             aria-hidden
             tabIndex={-1}
             to={`/users/${post.author.id}`}
+            onClick={handleLinkClick}
             className="focus-visible:outline-primary block w-fit rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <img
@@ -132,12 +154,17 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
               <div className="min-w-0">
                 <Link
                   to={`/users/${post.author.id}`}
+                  onClick={handleLinkClick}
                   className="block truncate font-bold hover:underline"
                 >
                   {post.author.name}
                 </Link>
                 <div className="flex text-gray-500 dark:text-gray-400">
-                  <Link className="truncate" to={`/users/${post.author.id}`}>
+                  <Link
+                    className="truncate"
+                    to={`/users/${post.author.id}`}
+                    onClick={handleLinkClick}
+                  >
                     @{post.author.username}
                   </Link>
                   <div className="px-1">·</div>
@@ -151,6 +178,7 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
           <div>{post.text}</div>
           <div className="mt-3 flex justify-between gap-x-1">
             <button
+              onClick={handleReplyToggle}
               aria-label={`${post._count.replies} ${post._count.replies === 1 ? "reply" : "replies"}. Reply`}
               className="group hover:text-reply flex min-h-5 cursor-pointer justify-center overflow-visible text-gray-500 dark:text-gray-400"
             >
