@@ -4,6 +4,7 @@ import {
   getCurrentUser,
   getCurrentUserLikes,
   getPostById,
+  getPostReplies,
   getUserById,
   getUserFollowers,
   getUserFollowing,
@@ -57,6 +58,12 @@ export const getPostOptions = (postId: number) =>
   queryOptions({
     queryKey: ["posts", postId],
     queryFn: () => getPostById(postId),
+  });
+
+export const getRepliesOptions = (postId: number) =>
+  queryOptions({
+    queryKey: ["posts", postId, "replies"],
+    queryFn: () => getPostReplies(postId),
   });
 
 export const getHistoryPostsOptions = (path: string) =>

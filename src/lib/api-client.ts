@@ -57,6 +57,9 @@ export const listPosts = (): Promise<PostPublic[]> => request("/posts");
 export const getPostById = (postId: number): Promise<PostPublic> =>
   request(`/posts/${postId}`);
 
+export const getPostReplies = (postId: number): Promise<PostPublic[]> =>
+  request(`/posts/${postId}/replies`);
+
 export const repostPost = (postId: number): Promise<void> =>
   request(`/users/me/reposts/${postId}`, { method: "PUT" });
 
