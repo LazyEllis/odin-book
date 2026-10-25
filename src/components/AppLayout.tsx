@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet, useLocation, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
   Dialog,
@@ -10,6 +10,7 @@ import {
 import {
   ArrowRightEndOnRectangleIcon,
   BookmarkIcon,
+  ChatBubbleOvalLeftIcon,
   HomeIcon,
   MagnifyingGlassIcon,
   PencilSquareIcon,
@@ -18,15 +19,38 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon as HomeSolidIcon } from "@heroicons/react/24/solid";
+import type { PostFormContext } from "../interfaces/contexts";
 import { currentUserOptions } from "../utils/query-options";
 import { classNames } from "../utils/format";
 import useAuth from "../hooks/useAuth";
 import Logo from "./Logo";
 import PostForm from "./PostForm";
 
+interface PostFormOptions {
+  isOpen: boolean;
+  formOptions: {
+    inReplyToPostId: number | null;
+    quotedPostId: number | null;
+  };
+}
+
+const initialPostFormOptions: PostFormOptions = {
+  isOpen: false,
+  formOptions: {
+    inReplyToPostId: null,
+    quotedPostId: null,
+  },
+};
+
 const AppLayout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [postFormOptions, setPostFormOptions] = useState(
+    initialPostFormOptions,
+  );
+
+  const { postId } = useParams();
+  const location = useLocation();
+  const isPostPage = location.pathname === `/posts/${postId}`;
 
   const { error, data: user } = useQuery(currentUserOptions);
   const { logout } = useAuth();
@@ -35,9 +59,25 @@ const AppLayout = () => {
 
   const handleMenuClose = () => setIsMenuOpen(false);
 
-  const handleModalOpen = () => setIsModalOpen(true);
+  const handleModalOpen = () =>
+    setPostFormOptions({
+      isOpen: true,
+      formOptions: {
+        inReplyToPostId: isPostPage ? Number(postId) : null,
+        quotedPostId: null,
+      },
+    });
 
-  const handleModalClose = () => setIsModalOpen(false);
+  const handleModalClose = () => setPostFormOptions(initialPostFormOptions);
+
+  const toggleReply = (postId: number) =>
+    setPostFormOptions({
+      isOpen: true,
+      formOptions: {
+        inReplyToPostId: postId,
+        quotedPostId: null,
+      },
+    });
 
   useEffect(() => {
     if (error?.message === "Unauthorized") {
@@ -67,7 +107,7 @@ const AppLayout = () => {
         </div>
       </header>
       <main className="flex-1 pb-14">
-        <Outlet />
+        <Outlet context={{ toggleReply } satisfies PostFormContext} />
       </main>
       <footer className="pointer-events-none fixed inset-x-0 bottom-0">
         <aside aria-label="Compose a post" className="relative flex flex-col">
@@ -77,9 +117,17 @@ const AppLayout = () => {
               className="bg-bookmark hover:bg-bookmark/90 flex size-14 cursor-pointer items-center justify-center rounded-full shadow-xs"
             >
               <span className="sr-only">Compose a post</span>
-              <PencilSquareIcon className="size-6 text-white" />
+              {isPostPage ? (
+                <ChatBubbleOvalLeftIcon className="size-6 text-white" />
+              ) : (
+                <PencilSquareIcon className="size-6 text-white" />
+              )}
             </button>
-            <PostForm isOpen={isModalOpen} onClose={handleModalClose} />
+            <PostForm
+              isOpen={postFormOptions.isOpen}
+              onClose={handleModalClose}
+              formOptions={postFormOptions.formOptions}
+            />
           </div>
         </aside>
 

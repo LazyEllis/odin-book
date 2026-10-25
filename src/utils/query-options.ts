@@ -11,6 +11,7 @@ import {
   getUserPosts,
   getUserReplies,
   getUserReposts,
+  listPosts,
 } from "../lib/api-client";
 
 export const currentUserOptions = queryOptions({
@@ -22,6 +23,12 @@ export const getUserOptions = (userId: number) =>
   queryOptions({
     queryKey: ["users", Number(userId)],
     queryFn: () => getUserById(Number(userId)),
+  });
+
+export const getPostListOptions = () =>
+  queryOptions({
+    queryKey: ["posts"],
+    queryFn: listPosts,
   });
 
 export const getUserPostsOptions = (userId: number, path: string) => {

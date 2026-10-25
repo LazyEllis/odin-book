@@ -17,10 +17,12 @@ import {
 } from "../lib/api-client";
 import { getPostOptions } from "../utils/query-options";
 import { classNames } from "../utils/format";
+import { usePostForm } from "../hooks/usePostForm";
 import PostRepliesList from "../components/PostRepliesList";
 
 const Post = () => {
   const { postId } = useParams();
+  const { toggleReply } = usePostForm();
   const queryClient = useQueryClient();
 
   const postOptions = getPostOptions(Number(postId));
@@ -98,6 +100,8 @@ const Post = () => {
     },
   });
 
+  const handleReplyToggle = () => toggleReply(Number(postId));
+
   const handleRepostToggle = () => repostMutation.mutate(Number(postId));
 
   const handleLikeToggle = () => likeMutation.mutate(Number(postId));
@@ -157,6 +161,7 @@ const Post = () => {
             <div className="">
               <div className="flex h-10 min-h-7.5 justify-between gap-x-1 border-t border-black/10 px-1 dark:border-white/20">
                 <button
+                  onClick={handleReplyToggle}
                   aria-label={`${post._count.replies} ${post._count.replies === 1 ? "reply" : "replies"}. Reply`}
                   className="group hover:text-reply flex min-h-5 cursor-pointer justify-center overflow-visible text-gray-500 dark:text-gray-400"
                 >

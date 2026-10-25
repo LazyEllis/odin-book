@@ -17,6 +17,7 @@ import {
   unlikePost,
   unrepostPost,
 } from "../lib/api-client";
+import { usePostForm } from "../hooks/usePostForm";
 
 interface Props {
   post: PostPublic;
@@ -26,6 +27,7 @@ interface Props {
 const TimelinePost: FC<Props> = ({ post, queryKey }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { toggleReply } = usePostForm();
 
   const repostMutation = useMutation({
     mutationFn: post.interactionStatus.isReposted ? unrepostPost : repostPost,
@@ -110,6 +112,7 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
 
   const handleReplyToggle = (e: MouseEvent) => {
     e.stopPropagation();
+    toggleReply(post.id);
   };
 
   const handleRepostToggle = (e: MouseEvent) => {

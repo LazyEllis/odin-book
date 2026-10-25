@@ -1,8 +1,12 @@
 import { useState, type ChangeEvent, type FC, type SubmitEvent } from "react";
-import { useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPost } from "../lib/api-client";
-import type { PostCreate } from "../interfaces/api";
+import {
+  getPostListOptions,
+  getPostOptions,
+  getRepliesOptions,
+  getUserPostsOptions,
+} from "../utils/query-options";
 import ErrorAlert from "./ErrorAlert";
 import Textarea from "./Textarea";
 import DialogForm from "./DialogForm";
@@ -10,46 +14,84 @@ import DialogForm from "./DialogForm";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  formOptions: {
+    inReplyToPostId: number | null;
+    quotedPostId: number | null;
+  };
 }
 
-const initialData: PostCreate = {
-  text: "",
-  inReplyToPostId: null,
-  quotedPostId: null,
-};
+const postListOptions = getPostListOptions();
 
-const PostForm: FC<Props> = ({ isOpen, onClose }) => {
-  const [formData, setFormData] = useState(initialData);
+const PostForm: FC<Props> = ({ isOpen, onClose, formOptions }) => {
+  const [text, setText] = useState("");
 
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setText(e.target.value);
+  };
+
+  const handleClose = () => {
+    setText("");
+    onClose();
   };
 
   const mutation = useMutation({
     mutationFn: createPost,
     onSuccess: (post) => {
-      navigate(`/posts/${post.id}`);
-      setFormData(initialData);
-      onClose();
+      const userPostsOptions = getUserPostsOptions(
+        post.author.id,
+        `/users/${post.author.id}`,
+      );
+
+      // Updates the timeline and profile post lists with the created post
+      queryClient.setQueryData(postListOptions.queryKey, (posts) =>
+        posts ? [post, ...posts] : posts,
+      );
+      queryClient.setQueryData(userPostsOptions.queryKey, (posts) =>
+        posts ? [post, ...posts] : posts,
+      );
+
+      if (post.repliedTo) {
+        const postOptions = getPostOptions(post.repliedTo.id);
+        const repliesOptions = getRepliesOptions(post.repliedTo.id);
+        const userRepliesOptions = getUserPostsOptions(
+          post.author.id,
+          `/users/${post.author.id}/replies`,
+        );
+
+        // Updates the parent post's reply count if the created post is a reply
+        queryClient.setQueryData(postOptions.queryKey, (post) =>
+          post
+            ? {
+                ...post,
+                _count: { ...post._count, replies: post._count.replies + 1 },
+              }
+            : post,
+        );
+
+        // Updates the parent post's and the user's profile's reply list if the created post is a reply
+        queryClient.setQueryData(repliesOptions.queryKey, (replies) =>
+          replies ? [post, ...replies] : replies,
+        );
+        queryClient.setQueryData(userRepliesOptions.queryKey, (replies) =>
+          replies ? [post, ...replies] : replies,
+        );
+      }
+
+      handleClose();
     },
   });
 
-  const handleClose = () => {
-    setFormData(initialData);
-    onClose();
-  };
-
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    mutation.mutate(formData);
+    mutation.mutate({ text, ...formOptions });
   };
 
   return (
     <DialogForm
-      title="Compose a Post"
-      action="Post"
+      title={"Compose a Post"}
+      action={formOptions.inReplyToPostId ? "Reply" : "Post"}
       isOpen={isOpen}
       isPending={mutation.isPending}
       onClose={handleClose}
@@ -64,7 +106,7 @@ const PostForm: FC<Props> = ({ isOpen, onClose }) => {
         rows={3}
         required
         onChange={handleChange}
-        value={formData.text}
+        value={text}
       />
     </DialogForm>
   );
