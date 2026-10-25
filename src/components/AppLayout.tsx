@@ -48,7 +48,7 @@ const AppLayout = () => {
   if (!user) return <Logo className="absolute inset-0 m-auto size-18" />;
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex min-h-full flex-col">
       <header className="mx-auto flex h-13.25 w-full flex-row items-center justify-between border-b border-black/10 px-4 dark:border-white/20">
         <button
           onClick={handleMenuOpen}
@@ -66,7 +66,7 @@ const AppLayout = () => {
           <Logo className="size-8" />
         </div>
       </header>
-      <main className="flex-1">
+      <main className="flex-1 pb-14">
         <Outlet />
       </main>
       <footer className="pointer-events-none fixed inset-x-0 bottom-0">
