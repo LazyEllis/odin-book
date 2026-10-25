@@ -69,97 +69,98 @@ const AppLayout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
-
-      <aside aria-label="Compose a post" className="relative flex flex-col">
-        <div className="relative top-[calc(env(safe-area-inset-bottom)-53-20px)] right-5 bottom-5 self-end">
-          <button
-            onClick={handleModalOpen}
-            className="bg-bookmark hover:bg-bookmark/90 flex size-14 cursor-pointer items-center justify-center rounded-full shadow-xs"
-          >
-            <span className="sr-only">Compose a post</span>
-            <PencilSquareIcon className="size-6 text-white" />
-          </button>
-          <PostForm isOpen={isModalOpen} onClose={handleModalClose} />
-        </div>
-      </aside>
-
-      <nav
-        className="flex h-14 max-h-[16vh] flex-row border-t border-black/10 dark:border-white/20"
-        aria-label="primary"
-      >
-        <NavLink
-          to="/"
-          className="flex grow flex-col items-center justify-center"
-        >
-          {({ isActive }) => (
-            <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
-              <span className="sr-only">Home</span>
-              {isActive ? (
-                <HomeSolidIcon className="inline-block size-7 max-w-full" />
-              ) : (
-                <HomeIcon className="inline-block size-7 max-w-full" />
-              )}
-            </div>
-          )}
-        </NavLink>
-        <NavLink
-          to="/explore"
-          className="flex grow flex-col items-center justify-center"
-        >
-          {({ isActive }) => (
-            <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
-              <span className="sr-only">Explore</span>
-              <MagnifyingGlassIcon
-                className={classNames(
-                  "inline-block size-7 max-w-full",
-                  isActive && "stroke-[2.6]",
-                )}
-              />
-            </div>
-          )}
-        </NavLink>
-        <NavLink
-          to={`/users/${user.id}`}
-          className="flex grow flex-col items-center justify-center"
-        >
-          {({ isActive }) => (
-            <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
-              <span className="sr-only">Profile</span>
-              <UserIcon
-                className={classNames(
-                  "inline-block size-7 max-w-full",
-                  isActive && "fill-current",
-                )}
-              />
-            </div>
-          )}
-        </NavLink>
-        <NavLink
-          to="/history"
-          className="flex grow flex-col items-center justify-center"
-        >
-          {({ isActive }) => (
-            <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
-              <span className="sr-only">History</span>
-              <BookmarkIcon
-                className={classNames(
-                  "inline-block size-7 max-w-full",
-                  isActive && "fill-current",
-                )}
-              />
-            </div>
-          )}
-        </NavLink>
-        <button
-          onClick={logout}
-          className="flex grow cursor-pointer flex-col items-center justify-center"
-        >
-          <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
-            <span className="sr-only">Log out</span>
-            <ArrowRightEndOnRectangleIcon className="inline-block size-7 max-w-full" />
+      <footer className="pointer-events-none fixed inset-x-0 bottom-0">
+        <aside aria-label="Compose a post" className="relative flex flex-col">
+          <div className="pointer-events-auto relative top-[calc(env(safe-area-inset-bottom)-53-20px)] right-5 bottom-5 self-end">
+            <button
+              onClick={handleModalOpen}
+              className="bg-bookmark hover:bg-bookmark/90 flex size-14 cursor-pointer items-center justify-center rounded-full shadow-xs"
+            >
+              <span className="sr-only">Compose a post</span>
+              <PencilSquareIcon className="size-6 text-white" />
+            </button>
+            <PostForm isOpen={isModalOpen} onClose={handleModalClose} />
           </div>
-        </button>
-      </nav>
+        </aside>
+
+        <nav
+          className="pointer-events-auto flex h-14 max-h-[16vh] flex-row border-t border-black/10 dark:border-white/20 dark:bg-black"
+          aria-label="primary"
+        >
+          <NavLink
+            to="/"
+            className="flex grow flex-col items-center justify-center"
+          >
+            {({ isActive }) => (
+              <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
+                <span className="sr-only">Home</span>
+                {isActive ? (
+                  <HomeSolidIcon className="inline-block size-7 max-w-full" />
+                ) : (
+                  <HomeIcon className="inline-block size-7 max-w-full" />
+                )}
+              </div>
+            )}
+          </NavLink>
+          <NavLink
+            to="/explore"
+            className="flex grow flex-col items-center justify-center"
+          >
+            {({ isActive }) => (
+              <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
+                <span className="sr-only">Explore</span>
+                <MagnifyingGlassIcon
+                  className={classNames(
+                    "inline-block size-7 max-w-full",
+                    isActive && "stroke-[2.6]",
+                  )}
+                />
+              </div>
+            )}
+          </NavLink>
+          <NavLink
+            to={`/users/${user.id}`}
+            className="flex grow flex-col items-center justify-center"
+          >
+            {({ isActive }) => (
+              <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
+                <span className="sr-only">Profile</span>
+                <UserIcon
+                  className={classNames(
+                    "inline-block size-7 max-w-full",
+                    isActive && "fill-current",
+                  )}
+                />
+              </div>
+            )}
+          </NavLink>
+          <NavLink
+            to="/history"
+            className="flex grow flex-col items-center justify-center"
+          >
+            {({ isActive }) => (
+              <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
+                <span className="sr-only">History</span>
+                <BookmarkIcon
+                  className={classNames(
+                    "inline-block size-7 max-w-full",
+                    isActive && "fill-current",
+                  )}
+                />
+              </div>
+            )}
+          </NavLink>
+          <button
+            onClick={logout}
+            className="flex grow cursor-pointer flex-col items-center justify-center"
+          >
+            <div className="rounded-full p-2 hover:bg-black/10 dark:hover:bg-white/10">
+              <span className="sr-only">Log out</span>
+              <ArrowRightEndOnRectangleIcon className="inline-block size-7 max-w-full" />
+            </div>
+          </button>
+        </nav>
+      </footer>
 
       <Dialog
         open={isMenuOpen}
