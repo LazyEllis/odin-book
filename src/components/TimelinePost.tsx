@@ -29,7 +29,7 @@ interface Props {
 const TimelinePost: FC<Props> = ({ post, queryKey }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { toggleReply } = usePostForm();
+  const { toggleReply, toggleQuote } = usePostForm();
 
   const repostMutation = useMutation({
     mutationFn: post.interactionStatus.isReposted ? unrepostPost : repostPost,
@@ -120,6 +120,11 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
   const handleRepostToggle = (e: MouseEvent) => {
     e.stopPropagation();
     repostMutation.mutate(post.id);
+  };
+
+  const handleQuoteToggle = (e: MouseEvent) => {
+    e.stopPropagation();
+    toggleQuote(post.id);
   };
 
   const handleLikeToggle = (e: MouseEvent) => {
@@ -247,7 +252,7 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
                 </MenuItem>
                 <MenuItem>
                   <button
-                    onClick={handleLinkClick}
+                    onClick={handleQuoteToggle}
                     className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5"
                   >
                     <PencilSquareIcon

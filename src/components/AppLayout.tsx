@@ -79,6 +79,15 @@ const AppLayout = () => {
       },
     });
 
+  const toggleQuote = (postId: number) =>
+    setPostFormOptions({
+      isOpen: true,
+      formOptions: {
+        inReplyToPostId: null,
+        quotedPostId: postId,
+      },
+    });
+
   useEffect(() => {
     if (error?.message === "Unauthorized") {
       logout();
@@ -107,7 +116,9 @@ const AppLayout = () => {
         </div>
       </header>
       <main className="flex-1 pb-14">
-        <Outlet context={{ toggleReply } satisfies PostFormContext} />
+        <Outlet
+          context={{ toggleReply, toggleQuote } satisfies PostFormContext}
+        />
       </main>
       <footer className="pointer-events-none fixed inset-x-0 bottom-0">
         <aside aria-label="Compose a post" className="relative flex flex-col">

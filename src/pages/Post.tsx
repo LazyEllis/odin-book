@@ -24,7 +24,7 @@ import PostRepliesList from "../components/PostRepliesList";
 
 const Post = () => {
   const { postId } = useParams();
-  const { toggleReply } = usePostForm();
+  const { toggleReply, toggleQuote } = usePostForm();
   const queryClient = useQueryClient();
 
   const postOptions = getPostOptions(Number(postId));
@@ -105,6 +105,8 @@ const Post = () => {
   const handleReplyToggle = () => toggleReply(Number(postId));
 
   const handleRepostToggle = () => repostMutation.mutate(Number(postId));
+
+  const handleQuoteToggle = () => toggleQuote(Number(postId));
 
   const handleLikeToggle = () => likeMutation.mutate(Number(postId));
 
@@ -225,7 +227,10 @@ const Post = () => {
                       </button>
                     </MenuItem>
                     <MenuItem>
-                      <button className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5">
+                      <button
+                        onClick={handleQuoteToggle}
+                        className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5"
+                      >
                         <PencilSquareIcon
                           aria-hidden="true"
                           className="mr-3 size-4.75"
