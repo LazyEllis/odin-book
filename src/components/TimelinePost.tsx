@@ -1,11 +1,13 @@
 import type { FC, MouseEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import {
   ChatBubbleOvalLeftIcon,
   ArrowPathRoundedSquareIcon,
   HeartIcon,
   BookmarkIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import type { PostPublic } from "../interfaces/api";
 import { classNames, formatTimestamp } from "../utils/format";
@@ -134,7 +136,7 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
     <div className="border-b border-black/10 dark:border-white/20">
       <article
         onClick={handlePostClick}
-        className="flex cursor-pointer overflow-hidden px-4 py-3 hover:bg-black/3 dark:hover:bg-white/3"
+        className="flex cursor-pointer px-4 py-3 hover:bg-black/3 dark:hover:bg-white/3"
       >
         <div className="mr-2 shrink-0 grow-0 basis-10 items-center">
           <Link
@@ -198,29 +200,65 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
               </div>
             </button>
 
-            <button
-              onClick={handleRepostToggle}
-              disabled={repostMutation.isPending}
-              aria-label={`${post._count.reposts} ${post._count.reposts === 1 ? "repost" : "reposts"}. Repost`}
-              className={classNames(
-                "group hover:text-repost flex min-h-5 cursor-pointer justify-center overflow-visible",
-                post.interactionStatus.isReposted
-                  ? "text-repost"
-                  : "text-gray-500 dark:text-gray-400",
-              )}
-            >
-              <div className="flex min-w-0 items-center justify-start wrap-break-word whitespace-nowrap">
-                <div className="relative inline-flex">
-                  <div className="group-hover:bg-repost/10 absolute inset-0 -m-2 inline-flex rounded-full"></div>
-                  <ArrowPathRoundedSquareIcon className="size-4.75" />
-                </div>
-                {post._count.reposts > 0 && (
-                  <div className="inline-flex overflow-hidden pl-1 text-sm">
-                    {post._count.reposts}
-                  </div>
+            <Menu as="div" className="relative self-center">
+              <MenuButton
+                onClick={handleLinkClick}
+                className={classNames(
+                  "group hover:text-repost flex min-h-5 cursor-pointer justify-center overflow-visible",
+                  post.interactionStatus.isReposted
+                    ? "text-repost"
+                    : "text-gray-500 dark:text-gray-400",
                 )}
-              </div>
-            </button>
+              >
+                <div className="flex min-w-0 items-center justify-start wrap-break-word whitespace-nowrap">
+                  <div className="relative inline-flex">
+                    <div className="group-hover:bg-repost/10 absolute inset-0 -m-2 inline-flex rounded-full"></div>
+                    <ArrowPathRoundedSquareIcon className="size-4.75" />
+                  </div>
+                  {post._count.reposts > 0 && (
+                    <div className="inline-flex overflow-hidden pl-1 text-sm">
+                      {post._count.reposts}
+                    </div>
+                  )}
+                </div>
+              </MenuButton>
+              <MenuItems
+                transition
+                className={classNames(
+                  "absolute right-0 z-50 mt-0.5 rounded-md bg-white py-2 shadow-lg outline-1 outline-gray-900/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in dark:bg-neutral-900 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10",
+                  post.interactionStatus.isReposted ? "w-38" : "w-32",
+                )}
+              >
+                <MenuItem>
+                  <button
+                    onClick={handleRepostToggle}
+                    disabled={repostMutation.isPending}
+                    aria-label={`${post._count.reposts} ${post._count.reposts === 1 ? "repost" : "reposts"}. Repost`}
+                    className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5"
+                  >
+                    <ArrowPathRoundedSquareIcon
+                      aria-hidden="true"
+                      className="mr-3 size-4.75"
+                    />
+                    {post.interactionStatus.isReposted
+                      ? "Undo Repost"
+                      : "Repost"}
+                  </button>
+                </MenuItem>
+                <MenuItem>
+                  <button
+                    onClick={handleLinkClick}
+                    className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5"
+                  >
+                    <PencilSquareIcon
+                      aria-hidden="true"
+                      className="mr-3 size-4.75"
+                    />
+                    Quote
+                  </button>
+                </MenuItem>
+              </MenuItems>
+            </Menu>
 
             <button
               onClick={handleLikeToggle}
