@@ -19,9 +19,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon as HomeSolidIcon } from "@heroicons/react/24/solid";
-import type { PostFormContext } from "../interfaces/contexts";
 import { currentUserOptions } from "../utils/query-options";
 import { classNames } from "../utils/format";
+import { PostFormContext } from "../contexts/PostFormContext";
 import useAuth from "../hooks/useAuth";
 import Logo from "./Logo";
 import PostForm from "./PostForm";
@@ -116,9 +116,9 @@ const AppLayout = () => {
         </div>
       </header>
       <main className="flex-1 pb-14">
-        <Outlet
-          context={{ toggleReply, toggleQuote } satisfies PostFormContext}
-        />
+        <PostFormContext value={{ toggleReply, toggleQuote }}>
+          <Outlet />
+        </PostFormContext>
       </main>
       <footer className="pointer-events-none fixed inset-x-0 bottom-0">
         <aside aria-label="Compose a post" className="relative flex flex-col">

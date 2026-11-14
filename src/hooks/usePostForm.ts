@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router";
-import type { PostFormContext } from "../interfaces/contexts";
+import { useContext } from "react";
+import { PostFormContext } from "../contexts/PostFormContext";
 
-export const usePostForm = () => useOutletContext<PostFormContext>();
+export const usePostForm = () => useContext(PostFormContext);
