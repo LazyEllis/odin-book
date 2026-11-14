@@ -7,6 +7,10 @@ import {
   HeartIcon,
   BookmarkIcon,
   PencilSquareIcon,
+  EllipsisHorizontalIcon,
+  TrashIcon,
+  MapPinIcon,
+  ChartBarSquareIcon,
 } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import {
@@ -21,10 +25,12 @@ import { getPostOptions } from "../utils/query-options";
 import { classNames } from "../utils/format";
 import { usePostForm } from "../hooks/usePostForm";
 import PostRepliesList from "../components/PostRepliesList";
+import { useConfirmationDialog } from "../hooks/useConfirmationDialog";
 
 const Post = () => {
-  const { postId } = useParams();
   const { toggleReply, toggleQuote } = usePostForm();
+  const { toggleDelete } = useConfirmationDialog();
+  const { postId } = useParams();
   const queryClient = useQueryClient();
 
   const postOptions = getPostOptions(Number(postId));
@@ -112,6 +118,8 @@ const Post = () => {
 
   const handleBookmarkToggle = () => bookmarkMutation.mutate(Number(postId));
 
+  const handleDeleteToggle = () => toggleDelete(Number(postId));
+
   if (isPending) return <div>Loading...</div>;
 
   if (error) return <div>{error.message}</div>;
@@ -121,7 +129,7 @@ const Post = () => {
       <div className="border-b border-black/10 dark:border-white/20">
         <article className="flex flex-col px-4 pt-3">
           <div className="z-2 flex">
-            <div className="mr-2 flex shrink-0">
+            <div className="mr-2 flex shrink-0 basis-10">
               <Link
                 tabIndex={-1}
                 to={`/users/${post.author.id}`}
@@ -130,11 +138,11 @@ const Post = () => {
                 <img
                   alt=""
                   src={post.author.profileImageUrl}
-                  className="size-10 cursor-pointer rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
+                  className="cursor-pointer rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
                 />
               </Link>
             </div>
-            <div className="mb-0.5 flex flex-1 justify-between">
+            <div className="mb-0.5 flex flex-1 items-start justify-between">
               <div>
                 <Link
                   to={`/users/${post.author.id}`}
@@ -149,6 +157,45 @@ const Post = () => {
                   @{post.author.username}
                 </Link>
               </div>
+              <Menu as="div" className="relative ml-2">
+                <MenuButton className="relative block text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-white">
+                  <span className="absolute -inset-2.5" />
+                  <span className="sr-only">Open options</span>
+                  <EllipsisHorizontalIcon
+                    aria-hidden="true"
+                    className="size-5"
+                  />
+                </MenuButton>
+                <MenuItems
+                  transition
+                  className="absolute right-0 z-10 mt-0.5 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg outline-1 outline-gray-900/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in dark:bg-neutral-900 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+                >
+                  <MenuItem>
+                    <button
+                      onClick={handleDeleteToggle}
+                      className="text-danger flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold data-focus:bg-gray-50 data-focus:outline-hidden dark:data-focus:bg-white/5"
+                    >
+                      <TrashIcon className="mr-3 size-4.75" />
+                      Delete
+                    </button>
+                  </MenuItem>
+                  <MenuItem>
+                    <button className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5">
+                      <MapPinIcon className="mr-3 size-4.75" />
+                      Pin to your profile
+                    </button>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      to={`/posts/${post.id}/quotes`}
+                      className="flex items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5"
+                    >
+                      <ChartBarSquareIcon className="mr-3 size-4.75" />
+                      View post activity
+                    </Link>
+                  </MenuItem>
+                </MenuItems>
+              </Menu>
             </div>
           </div>
           <div>

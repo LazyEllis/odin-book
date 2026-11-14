@@ -57,6 +57,9 @@ export const listPosts = (): Promise<PostPublic[]> => request("/posts");
 export const getPostById = (postId: number): Promise<PostPublic> =>
   request(`/posts/${postId}`);
 
+export const deletePost = (postId: number): Promise<void> =>
+  request(`/posts/${postId}`, { method: "DELETE" });
+
 export const getPostReplies = (postId: number): Promise<PostPublic[]> =>
   request(`/posts/${postId}/replies`);
 

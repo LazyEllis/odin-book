@@ -8,6 +8,10 @@ import {
   HeartIcon,
   BookmarkIcon,
   PencilSquareIcon,
+  EllipsisHorizontalIcon,
+  TrashIcon,
+  MapPinIcon,
+  ChartBarSquareIcon,
 } from "@heroicons/react/24/outline";
 import type { PostPublic } from "../interfaces/api";
 import { classNames, formatTimestamp } from "../utils/format";
@@ -20,6 +24,7 @@ import {
   unrepostPost,
 } from "../lib/api-client";
 import { usePostForm } from "../hooks/usePostForm";
+import { useConfirmationDialog } from "../hooks/useConfirmationDialog";
 
 interface Props {
   post: PostPublic;
@@ -29,6 +34,7 @@ interface Props {
 const TimelinePost: FC<Props> = ({ post, queryKey }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { toggleDelete } = useConfirmationDialog();
   const { toggleReply, toggleQuote } = usePostForm();
 
   const repostMutation = useMutation({
@@ -137,6 +143,11 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
     bookmarkMutation.mutate(post.id);
   };
 
+  const handleDeleteToggle = (e: MouseEvent) => {
+    e.stopPropagation();
+    toggleDelete(post.id);
+  };
+
   return (
     <div className="border-b border-black/10 dark:border-white/20">
       <article
@@ -183,6 +194,49 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
                   </time>
                 </div>
               </div>
+              <Menu as="div" className="relative ml-2">
+                <MenuButton
+                  onClick={handleLinkClick}
+                  className="relative block text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-white"
+                >
+                  <span className="absolute -inset-2.5" />
+                  <span className="sr-only">Open options</span>
+                  <EllipsisHorizontalIcon
+                    aria-hidden="true"
+                    className="size-5"
+                  />
+                </MenuButton>
+                <MenuItems
+                  transition
+                  className="absolute right-0 z-10 mt-0.5 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg outline-1 outline-gray-900/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in dark:bg-neutral-900 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+                >
+                  <MenuItem>
+                    <button
+                      onClick={handleDeleteToggle}
+                      className="text-danger flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold data-focus:bg-gray-50 data-focus:outline-hidden dark:data-focus:bg-white/5"
+                    >
+                      <TrashIcon className="mr-3 size-4.75" />
+                      Delete
+                    </button>
+                  </MenuItem>
+                  <MenuItem>
+                    <button className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5">
+                      <MapPinIcon className="mr-3 size-4.75" />
+                      Pin to your profile
+                    </button>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      to={`/posts/${post.id}/quotes`}
+                      onClick={handleLinkClick}
+                      className="flex items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5"
+                    >
+                      <ChartBarSquareIcon className="mr-3 size-4.75" />
+                      View post activity
+                    </Link>
+                  </MenuItem>
+                </MenuItems>
+              </Menu>
             </div>
           </div>
           <div>{post.text}</div>

@@ -25,6 +25,8 @@ import { PostFormContext } from "../contexts/PostFormContext";
 import useAuth from "../hooks/useAuth";
 import Logo from "./Logo";
 import PostForm from "./PostForm";
+import ConfirmationDialog from "./ConfirmationDialog";
+import { ConfirmationDialogContext } from "../contexts/ConfirmationDialogContext";
 
 interface PostFormOptions {
   isOpen: boolean;
@@ -32,6 +34,12 @@ interface PostFormOptions {
     inReplyToPostId: number | null;
     quotedPostId: number | null;
   };
+}
+
+interface PostModalOptions {
+  isOpen: boolean;
+  action: "DELETE" | "PIN" | null;
+  postId: number;
 }
 
 const initialPostFormOptions: PostFormOptions = {
@@ -42,10 +50,19 @@ const initialPostFormOptions: PostFormOptions = {
   },
 };
 
+const initialPostModalOptions: PostModalOptions = {
+  isOpen: false,
+  action: null,
+  postId: 0,
+};
+
 const AppLayout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [postFormOptions, setPostFormOptions] = useState(
     initialPostFormOptions,
+  );
+  const [postModalOptions, setPostModalOptions] = useState(
+    initialPostModalOptions,
   );
 
   const { postId } = useParams();
@@ -70,6 +87,9 @@ const AppLayout = () => {
 
   const handleModalClose = () => setPostFormOptions(initialPostFormOptions);
 
+  const handlePostModalClose = () =>
+    setPostModalOptions(initialPostModalOptions);
+
   const toggleReply = (postId: number) =>
     setPostFormOptions({
       isOpen: true,
@@ -86,6 +106,20 @@ const AppLayout = () => {
         inReplyToPostId: null,
         quotedPostId: postId,
       },
+    });
+
+  const toggleDelete = (postId: number) =>
+    setPostModalOptions({
+      isOpen: true,
+      action: "DELETE",
+      postId,
+    });
+
+  const togglePin = (postId: number) =>
+    setPostModalOptions({
+      isOpen: true,
+      action: "PIN",
+      postId,
     });
 
   useEffect(() => {
@@ -117,7 +151,9 @@ const AppLayout = () => {
       </header>
       <main className="flex-1 pb-14">
         <PostFormContext value={{ toggleReply, toggleQuote }}>
-          <Outlet />
+          <ConfirmationDialogContext value={{ toggleDelete, togglePin }}>
+            <Outlet />
+          </ConfirmationDialogContext>
         </PostFormContext>
       </main>
       <footer className="pointer-events-none fixed inset-x-0 bottom-0">
@@ -220,6 +256,12 @@ const AppLayout = () => {
           </button>
         </nav>
       </footer>
+
+      <ConfirmationDialog
+        postId={postModalOptions.postId}
+        isOpen={postModalOptions.isOpen}
+        onClose={handlePostModalClose}
+      />
 
       <Dialog
         open={isMenuOpen}
