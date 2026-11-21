@@ -11,3 +11,5 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   label: string;
   variant: "textarea";
 }
+
+export type ConfirmationAction = "DELETE" | "PIN" | null;

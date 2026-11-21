@@ -21,21 +21,24 @@ import {
   unlikePost,
   unrepostPost,
 } from "../lib/api-client";
-import { getPostOptions } from "../utils/query-options";
+import { currentUserOptions, getPostOptions } from "../utils/query-options";
 import { classNames } from "../utils/format";
 import { usePostForm } from "../hooks/usePostForm";
-import PostRepliesList from "../components/PostRepliesList";
 import { useConfirmationDialog } from "../hooks/useConfirmationDialog";
+import PostRepliesList from "../components/PostRepliesList";
 
 const Post = () => {
   const { toggleReply, toggleQuote } = usePostForm();
-  const { toggleDelete } = useConfirmationDialog();
+  const { toggleDelete, togglePin } = useConfirmationDialog();
   const { postId } = useParams();
   const queryClient = useQueryClient();
 
   const postOptions = getPostOptions(Number(postId));
 
   const { isPending, error, data: post } = useQuery(postOptions);
+  const { data: user } = useQuery(currentUserOptions);
+
+  const isPostPinned = user?.pinnedPostId === post?.id;
 
   const repostMutation = useMutation({
     mutationFn: post?.interactionStatus.isReposted ? unrepostPost : repostPost,
@@ -120,6 +123,8 @@ const Post = () => {
 
   const handleDeleteToggle = () => toggleDelete(Number(postId));
 
+  const handlePinToggle = () => togglePin(Number(postId));
+
   if (isPending) return <div>Loading...</div>;
 
   if (error) return <div>{error.message}</div>;
@@ -158,8 +163,8 @@ const Post = () => {
                 </Link>
               </div>
               <Menu as="div" className="relative ml-2">
-                <MenuButton className="relative block text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-white">
-                  <span className="absolute -inset-2.5" />
+                <MenuButton className="group hover:text-bookmark relative block cursor-pointer text-gray-400 dark:text-gray-400">
+                  <span className="group-hover:bg-bookmark/10 absolute -inset-2 rounded-full" />
                   <span className="sr-only">Open options</span>
                   <EllipsisHorizontalIcon
                     aria-hidden="true"
@@ -180,9 +185,14 @@ const Post = () => {
                     </button>
                   </MenuItem>
                   <MenuItem>
-                    <button className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5">
+                    <button
+                      onClick={handlePinToggle}
+                      className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5"
+                    >
                       <MapPinIcon className="mr-3 size-4.75" />
-                      Pin to your profile
+                      {isPostPinned
+                        ? "Unpin from profile"
+                        : "Pin to your profile"}
                     </button>
                   </MenuItem>
                   <MenuItem>

@@ -21,12 +21,13 @@ import {
 import { HomeIcon as HomeSolidIcon } from "@heroicons/react/24/solid";
 import { currentUserOptions } from "../utils/query-options";
 import { classNames } from "../utils/format";
+import type { ConfirmationAction } from "../interfaces/props";
 import { PostFormContext } from "../contexts/PostFormContext";
+import { ConfirmationDialogContext } from "../contexts/ConfirmationDialogContext";
 import useAuth from "../hooks/useAuth";
 import Logo from "./Logo";
 import PostForm from "./PostForm";
 import ConfirmationDialog from "./ConfirmationDialog";
-import { ConfirmationDialogContext } from "../contexts/ConfirmationDialogContext";
 
 interface PostFormOptions {
   isOpen: boolean;
@@ -38,7 +39,7 @@ interface PostFormOptions {
 
 interface PostModalOptions {
   isOpen: boolean;
-  action: "DELETE" | "PIN" | null;
+  action: ConfirmationAction;
   postId: number;
 }
 
@@ -258,9 +259,9 @@ const AppLayout = () => {
       </footer>
 
       <ConfirmationDialog
-        postId={postModalOptions.postId}
-        isOpen={postModalOptions.isOpen}
+        isPostPinned={user.pinnedPostId === postModalOptions.postId}
         onClose={handlePostModalClose}
+        {...postModalOptions}
       />
 
       <Dialog

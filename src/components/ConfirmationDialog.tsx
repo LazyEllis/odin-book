@@ -1,24 +1,39 @@
 import type { FC } from "react";
 import { useNavigate } from "react-router";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { deletePost, pinPost, unpinPost } from "../lib/api-client";
 import { currentUserOptions } from "../utils/query-options";
-import { deletePost } from "../lib/api-client";
+import {
+  classNames,
+  continuousTense,
+  getConfirmationContent,
+} from "../utils/format";
+import type { ConfirmationAction } from "../interfaces/props";
 import Loader from "./Loader";
 
 interface Props {
   postId: number;
+  action: ConfirmationAction;
+  isPostPinned: boolean;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const PostConfirmationDialog: FC<Props> = ({ isOpen, onClose, postId }) => {
+const PostConfirmationDialog: FC<Props> = ({
+  postId,
+  action,
+  isPostPinned,
+  isOpen,
+  onClose,
+}) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data: currentUser } = useQuery(currentUserOptions);
 
@@ -30,7 +45,20 @@ const PostConfirmationDialog: FC<Props> = ({ isOpen, onClose, postId }) => {
     },
   });
 
-  const handleDelete = () => deleteMutation.mutate(postId);
+  const pinMutation = useMutation({
+    mutationFn: isPostPinned ? unpinPost : pinPost,
+    onSuccess: () => {
+      onClose();
+      queryClient.setQueryData(currentUserOptions.queryKey, (user) =>
+        user ? { ...user, pinnedPostId: isPostPinned ? null : postId } : user,
+      );
+    },
+  });
+
+  const content = getConfirmationContent(action, isPostPinned);
+  const activeMutation = action === "DELETE" ? deleteMutation : pinMutation;
+
+  const handleConfirmation = () => activeMutation.mutate(postId);
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-10">
@@ -51,29 +79,35 @@ const PostConfirmationDialog: FC<Props> = ({ isOpen, onClose, postId }) => {
                   as="h2"
                   className="text-base font-semibold text-gray-900 dark:text-white"
                 >
-                  Delete Post?
+                  {content.title}
                 </DialogTitle>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    This can't be undone and it will be removed from your
-                    profile, the timeline of any accounts that follow you, and
-                    from search results.
+                    {content.message}
                   </p>
                 </div>
               </div>
             </div>
             <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
               <button
-                onClick={handleDelete}
-                className="inline-flex w-full cursor-pointer justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-700 sm:ml-3 sm:w-auto dark:bg-red-500 dark:shadow-none dark:hover:bg-red-600"
+                onClick={handleConfirmation}
+                disabled={activeMutation.isPending}
+                className={classNames(
+                  "inline-flex w-full cursor-pointer justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs sm:ml-3 sm:w-auto",
+                  action === "DELETE"
+                    ? "bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:shadow-none dark:hover:bg-red-600"
+                    : "bg-black hover:bg-black/75 focus-visible:outline-black dark:bg-white dark:text-black dark:hover:bg-white/90 dark:focus-visible:outline-white",
+                )}
               >
-                {deleteMutation.isPending && <Loader />}{" "}
-                {deleteMutation.isPending ? "Deleting..." : "Delete"}
+                {activeMutation.isPending && <Loader isButton />}{" "}
+                {activeMutation.isPending
+                  ? continuousTense(content.action)
+                  : content.action}
               </button>
               <button
                 data-autofocus
                 onClick={onClose}
-                disabled={deleteMutation.isPending}
+                disabled={activeMutation.isPending}
                 className="mt-3 inline-flex w-full cursor-pointer justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto dark:bg-white/10 dark:text-white dark:shadow-none dark:inset-ring-white/5 dark:hover:bg-white/20"
               >
                 Cancel

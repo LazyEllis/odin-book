@@ -1,4 +1,5 @@
 import { differenceInSeconds, isThisYear, format } from "date-fns";
+import type { ConfirmationAction } from "../interfaces/props";
 
 const ONE_MINUTE = 60;
 const ONE_HOUR = 60 * ONE_MINUTE;
@@ -31,6 +32,33 @@ export const classNames = (...classes: (string | boolean)[]) => {
 };
 
 export const formatURL = (url: string) => url.replace(/(^\w+:|^)\/\//, "");
+
+export const getConfirmationContent = (
+  action: ConfirmationAction,
+  isPinned: boolean = false,
+) => {
+  if (action === "DELETE")
+    return {
+      title: "Delete post?",
+      message:
+        "This can't be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from search results.",
+      action: "Delete",
+    };
+  else if (isPinned)
+    return {
+      title: "Unpin post from profile?",
+      message:
+        "This will no longer appear automatically at the top of your profile.",
+      action: "Unpin",
+    };
+  else
+    return {
+      title: "Pin post to profile?",
+      message:
+        "This will appear at the top of your profile and replace any previously pinned post.",
+      action: "Pin",
+    };
+};
 
 export const pastTense = (resource: string) => {
   if (resource === "posts") {

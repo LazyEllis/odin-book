@@ -1,6 +1,6 @@
 import type { FC, MouseEvent } from "react";
 import { Link, useNavigate } from "react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import {
   ChatBubbleOvalLeftIcon,
@@ -15,6 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 import type { PostPublic } from "../interfaces/api";
 import { classNames, formatTimestamp } from "../utils/format";
+import { currentUserOptions } from "../utils/query-options";
 import {
   bookmarkPost,
   likePost,
@@ -34,8 +35,12 @@ interface Props {
 const TimelinePost: FC<Props> = ({ post, queryKey }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { toggleDelete } = useConfirmationDialog();
+  const { toggleDelete, togglePin } = useConfirmationDialog();
   const { toggleReply, toggleQuote } = usePostForm();
+
+  const { data: user } = useQuery(currentUserOptions);
+
+  const isPostPinned = user?.pinnedPostId === post.id;
 
   const repostMutation = useMutation({
     mutationFn: post.interactionStatus.isReposted ? unrepostPost : repostPost,
@@ -148,6 +153,11 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
     toggleDelete(post.id);
   };
 
+  const handlePinToggle = (e: MouseEvent) => {
+    e.stopPropagation();
+    togglePin(post.id);
+  };
+
   return (
     <div className="border-b border-black/10 dark:border-white/20">
       <article
@@ -197,9 +207,9 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
               <Menu as="div" className="relative ml-2">
                 <MenuButton
                   onClick={handleLinkClick}
-                  className="relative block text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-white"
+                  className="group hover:text-bookmark relative block cursor-pointer text-gray-400 dark:text-gray-400"
                 >
-                  <span className="absolute -inset-2.5" />
+                  <span className="group-hover:bg-bookmark/10 absolute -inset-2 rounded-full" />
                   <span className="sr-only">Open options</span>
                   <EllipsisHorizontalIcon
                     aria-hidden="true"
@@ -220,9 +230,14 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
                     </button>
                   </MenuItem>
                   <MenuItem>
-                    <button className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5">
+                    <button
+                      onClick={handlePinToggle}
+                      className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5"
+                    >
                       <MapPinIcon className="mr-3 size-4.75" />
-                      Pin to your profile
+                      {isPostPinned
+                        ? "Unpin from profile"
+                        : "Pin to your profile"}
                     </button>
                   </MenuItem>
                   <MenuItem>
