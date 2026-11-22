@@ -1,16 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { listUsers } from "../lib/api-client";
+import { userListOptions } from "../utils/query-options";
 import UserCard from "../components/UserCard";
 
 const Users = () => {
-  const {
-    isPending,
-    error,
-    data: users,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: listUsers,
-  });
+  const { isPending, error, data: users } = useQuery(userListOptions);
+  const { queryKey } = userListOptions;
 
   if (isPending) return <div>Loading...</div>;
 
@@ -23,7 +17,7 @@ const Users = () => {
       </header>
       <div>
         {users.map((user) => (
-          <UserCard user={user} queryKey={["users"]} key={user.id} />
+          <UserCard user={user} queryKey={queryKey} key={user.id} />
         ))}
       </div>
     </>

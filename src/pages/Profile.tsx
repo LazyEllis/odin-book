@@ -3,9 +3,9 @@ import { Link, NavLink, useParams } from "react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LinkIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import type { UserPublic } from "../interfaces/api";
-import { followUser, getUserById, unfollowUser } from "../lib/api-client";
+import { followUser, unfollowUser } from "../lib/api-client";
 import { classNames, formatURL } from "../utils/format";
-import { currentUserOptions } from "../utils/query-options";
+import { currentUserOptions, getUserOptions } from "../utils/query-options";
 import ProfilePostList from "../components/ProfilePostList";
 import ProfileEditForm from "../components/ProfileEditForm";
 
@@ -14,16 +14,10 @@ const Profile = () => {
 
   const { userId } = useParams();
   const queryClient = useQueryClient();
+  const userOptions = getUserOptions(Number(userId));
 
   const { data: currentUser } = useQuery(currentUserOptions);
-  const {
-    isPending,
-    error,
-    data: user,
-  } = useQuery({
-    queryKey: ["users", Number(userId)],
-    queryFn: () => getUserById(Number(userId)),
-  });
+  const { isPending, error, data: user } = useQuery(userOptions);
 
   const mutation = useMutation({
     mutationFn: user?.connectionStatus.isFollowing ? unfollowUser : followUser,

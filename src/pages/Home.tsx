@@ -1,12 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { listPosts } from "../lib/api-client";
+import { postListOptions } from "../utils/query-options";
 import TimelinePost from "../components/TimelinePost";
 
 const Home = () => {
-  const { data, isPending, error } = useQuery({
-    queryFn: listPosts,
-    queryKey: ["posts"],
-  });
+  const { data, isPending, error } = useQuery(postListOptions);
+  const { queryKey } = postListOptions;
 
   if (isPending) {
     return <span>Loading...</span>;
@@ -22,7 +20,7 @@ const Home = () => {
 
       <div>
         {data.map((post) => (
-          <TimelinePost post={post} queryKey={["posts"]} key={post.id} />
+          <TimelinePost post={post} queryKey={queryKey} key={post.id} />
         ))}
       </div>
     </>

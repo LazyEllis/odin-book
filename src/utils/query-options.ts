@@ -12,7 +12,13 @@ import {
   getUserReplies,
   getUserReposts,
   listPosts,
+  listUsers,
 } from "../lib/api-client";
+
+export const userListOptions = queryOptions({
+  queryKey: ["users"],
+  queryFn: listUsers,
+});
 
 export const currentUserOptions = queryOptions({
   queryFn: getCurrentUser,
@@ -23,12 +29,6 @@ export const getUserOptions = (userId: number) =>
   queryOptions({
     queryKey: ["users", Number(userId)],
     queryFn: () => getUserById(Number(userId)),
-  });
-
-export const getPostListOptions = () =>
-  queryOptions({
-    queryKey: ["posts"],
-    queryFn: listPosts,
   });
 
 export const getUserPostsOptions = (userId: number, path: string) => {
@@ -60,6 +60,11 @@ export const getUserFollowsOptions = (userId: number, path: string) =>
         queryKey: ["users", userId, "followers"],
         queryFn: () => getUserFollowers(userId),
       });
+
+export const postListOptions = queryOptions({
+  queryKey: ["posts"],
+  queryFn: listPosts,
+});
 
 export const getPostOptions = (postId: number) =>
   queryOptions({

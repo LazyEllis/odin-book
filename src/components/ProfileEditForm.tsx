@@ -2,7 +2,7 @@ import { useState, type ChangeEvent, type FC, type SubmitEvent } from "react";
 import { useParams } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateCurrentUser } from "../lib/api-client";
-import { currentUserOptions } from "../utils/query-options";
+import { currentUserOptions, getUserOptions } from "../utils/query-options";
 import type { InputProps, TextareaProps } from "../interfaces/props";
 import type { UserUpdate } from "../interfaces/api";
 import ErrorAlert from "./ErrorAlert";
@@ -27,14 +27,15 @@ const inputFields: (InputProps | TextareaProps)[] = [
 const ProfileEditForm: FC<Props> = ({ initialData, isOpen, onClose }) => {
   const [formData, setFormData] = useState(initialData);
 
-  const queryClient = useQueryClient();
   const { userId } = useParams();
+  const queryClient = useQueryClient();
+  const userOptions = getUserOptions(Number(userId));
 
   const mutation = useMutation({
     mutationFn: updateCurrentUser,
     onSuccess: (updatedUser) => {
       queryClient.setQueryData(currentUserOptions.queryKey, updatedUser);
-      queryClient.setQueryData(["users", Number(userId)], updatedUser);
+      queryClient.setQueryData(userOptions.queryKey, updatedUser);
       onClose();
     },
   });

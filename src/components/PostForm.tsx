@@ -2,10 +2,10 @@ import { useState, type ChangeEvent, type FC, type SubmitEvent } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPost } from "../lib/api-client";
 import {
-  getPostListOptions,
   getPostOptions,
   getRepliesOptions,
   getUserPostsOptions,
+  postListOptions,
 } from "../utils/query-options";
 import ErrorAlert from "./ErrorAlert";
 import Textarea from "./Textarea";
@@ -19,8 +19,6 @@ interface Props {
     quotedPostId: number | null;
   };
 }
-
-const postListOptions = getPostListOptions();
 
 const PostForm: FC<Props> = ({ isOpen, onClose, formOptions }) => {
   const [text, setText] = useState("");
