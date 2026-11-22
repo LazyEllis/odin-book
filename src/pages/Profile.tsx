@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, NavLink, useParams } from "react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LinkIcon, MapPinIcon } from "@heroicons/react/24/outline";
-import type { UserPublic } from "../interfaces/api";
 import { followUser, unfollowUser } from "../lib/api-client";
 import { classNames, formatURL } from "../utils/format";
 import { currentUserOptions, getUserOptions } from "../utils/query-options";
@@ -23,20 +22,21 @@ const Profile = () => {
     mutationFn: user?.connectionStatus.isFollowing ? unfollowUser : followUser,
     onSuccess: () => {
       queryClient.setQueryData(
-        ["users", Number(userId)],
-        (user: UserPublic) => ({
-          ...user,
-          _count: {
-            ...user._count,
-            followers: user.connectionStatus.isFollowing
-              ? user._count.followers - 1
-              : user._count.followers + 1,
+        userOptions.queryKey,
+        (user) =>
+          user && {
+            ...user,
+            _count: {
+              ...user._count,
+              followers: user.connectionStatus.isFollowing
+                ? user._count.followers - 1
+                : user._count.followers + 1,
+            },
+            connectionStatus: {
+              ...user.connectionStatus,
+              isFollowing: !user.connectionStatus.isFollowing,
+            },
           },
-          connectionStatus: {
-            ...user.connectionStatus,
-            isFollowing: !user.connectionStatus.isFollowing,
-          },
-        }),
       );
 
       queryClient.setQueryData(

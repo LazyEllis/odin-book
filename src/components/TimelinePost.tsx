@@ -14,6 +14,7 @@ import {
   ChartBarSquareIcon,
 } from "@heroicons/react/24/outline";
 import type { PostPublic } from "../interfaces/api";
+import type { QueryKey } from "../interfaces/props";
 import { classNames, formatTimestamp } from "../utils/format";
 import { currentUserOptions } from "../utils/query-options";
 import {
@@ -29,7 +30,7 @@ import { useConfirmationDialog } from "../hooks/useConfirmationDialog";
 
 interface Props {
   post: PostPublic;
-  queryKey: unknown[];
+  queryKey: QueryKey<PostPublic[]>;
 }
 
 const TimelinePost: FC<Props> = ({ post, queryKey }) => {
@@ -45,24 +46,27 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
   const repostMutation = useMutation({
     mutationFn: post.interactionStatus.isReposted ? unrepostPost : repostPost,
     onSuccess: () => {
-      queryClient.setQueryData(queryKey, (posts: PostPublic[]) =>
-        posts.map((p) =>
-          p.id === post.id
-            ? {
-                ...post,
-                _count: {
-                  ...post._count,
-                  reposts: post.interactionStatus.isReposted
-                    ? post._count.reposts - 1
-                    : post._count.reposts + 1,
-                },
-                interactionStatus: {
-                  ...post.interactionStatus,
-                  isReposted: !post.interactionStatus.isReposted,
-                },
-              }
-            : p,
-        ),
+      queryClient.setQueryData(
+        queryKey,
+        (posts) =>
+          posts &&
+          posts.map((p) =>
+            p.id === post.id
+              ? {
+                  ...post,
+                  _count: {
+                    ...post._count,
+                    reposts: post.interactionStatus.isReposted
+                      ? post._count.reposts - 1
+                      : post._count.reposts + 1,
+                  },
+                  interactionStatus: {
+                    ...post.interactionStatus,
+                    isReposted: !post.interactionStatus.isReposted,
+                  },
+                }
+              : p,
+          ),
       );
     },
   });
@@ -70,24 +74,27 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
   const likeMutation = useMutation({
     mutationFn: post.interactionStatus.isLiked ? unlikePost : likePost,
     onSuccess: () => {
-      queryClient.setQueryData(queryKey, (posts: PostPublic[]) =>
-        posts.map((p) =>
-          p.id === post.id
-            ? {
-                ...post,
-                _count: {
-                  ...post._count,
-                  likes: post.interactionStatus.isLiked
-                    ? post._count.likes - 1
-                    : post._count.likes + 1,
-                },
-                interactionStatus: {
-                  ...post.interactionStatus,
-                  isLiked: !post.interactionStatus.isLiked,
-                },
-              }
-            : p,
-        ),
+      queryClient.setQueryData(
+        queryKey,
+        (posts) =>
+          posts &&
+          posts.map((p) =>
+            p.id === post.id
+              ? {
+                  ...post,
+                  _count: {
+                    ...post._count,
+                    likes: post.interactionStatus.isLiked
+                      ? post._count.likes - 1
+                      : post._count.likes + 1,
+                  },
+                  interactionStatus: {
+                    ...post.interactionStatus,
+                    isLiked: !post.interactionStatus.isLiked,
+                  },
+                }
+              : p,
+          ),
       );
     },
   });
@@ -97,24 +104,27 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
       ? removePostBookmark
       : bookmarkPost,
     onSuccess: () => {
-      queryClient.setQueryData(queryKey, (posts: PostPublic[]) =>
-        posts.map((p) =>
-          p.id === post.id
-            ? {
-                ...post,
-                _count: {
-                  ...post._count,
-                  bookmarks: post.interactionStatus.isBookmarked
-                    ? post._count.bookmarks - 1
-                    : post._count.bookmarks + 1,
-                },
-                interactionStatus: {
-                  ...post.interactionStatus,
-                  isBookmarked: !post.interactionStatus.isBookmarked,
-                },
-              }
-            : p,
-        ),
+      queryClient.setQueryData(
+        queryKey,
+        (posts) =>
+          posts &&
+          posts.map((p) =>
+            p.id === post.id
+              ? {
+                  ...post,
+                  _count: {
+                    ...post._count,
+                    bookmarks: post.interactionStatus.isBookmarked
+                      ? post._count.bookmarks - 1
+                      : post._count.bookmarks + 1,
+                  },
+                  interactionStatus: {
+                    ...post.interactionStatus,
+                    isBookmarked: !post.interactionStatus.isBookmarked,
+                  },
+                }
+              : p,
+          ),
       );
     },
   });
