@@ -93,7 +93,7 @@ const UserCard: FC<Props> = ({ user, queryKey }) => {
                 className={classNames(
                   "inline-flex w-full cursor-pointer items-center justify-center rounded-full px-4 py-2 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 dark:shadow-none",
                   user.connectionStatus.isFollowing
-                    ? "group min-w-24.75 bg-white text-black outline-1 outline-offset-1 outline-black hover:text-[#f4212e] hover:outline-[#67070f] dark:bg-black dark:text-white dark:outline-white"
+                    ? "group hover:text-danger min-w-24.75 bg-white text-black outline-1 outline-offset-1 outline-black hover:outline-[#67070f] dark:bg-black dark:text-white dark:outline-white"
                     : "bg-black text-white hover:bg-black/90 focus-visible:outline-black dark:bg-white dark:text-black dark:hover:bg-white/90 dark:focus-visible:outline-white",
                 )}
               >
