@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { Link, NavLink, useParams } from "react-router";
+import { Link, NavLink, useLocation, useParams } from "react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LinkIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { followUser, unfollowUser } from "../lib/api-client";
 import { classNames, formatURL } from "../utils/format";
-import { currentUserOptions, getUserOptions } from "../utils/query-options";
+import {
+  currentUserOptions,
+  getUserOptions,
+  getUserPostsOptions,
+} from "../utils/query-options";
 import ProfilePostList from "../components/ProfilePostList";
 import ProfileEditForm from "../components/ProfileEditForm";
 
@@ -12,11 +16,18 @@ const Profile = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { userId } = useParams();
+  const location = useLocation();
   const queryClient = useQueryClient();
+
   const userOptions = getUserOptions(Number(userId));
+  const userPostsOptions = getUserPostsOptions(
+    Number(userId),
+    location.pathname,
+  );
 
   const { data: currentUser } = useQuery(currentUserOptions);
   const { isPending, error, data: user } = useQuery(userOptions);
+  const userPostsQuery = useQuery(userPostsOptions);
 
   const mutation = useMutation({
     mutationFn: user?.connectionStatus.isFollowing ? unfollowUser : followUser,
@@ -237,7 +248,14 @@ const Profile = () => {
         </div>
       </header>
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <ProfilePostList user={user} isCurrentUser={isCurrentUser} />
+        <ProfilePostList
+          isPending={userPostsQuery.isPending}
+          error={userPostsQuery.error}
+          posts={userPostsQuery.data}
+          queryKey={userPostsOptions.queryKey}
+          user={user}
+          isCurrentUser={isCurrentUser}
+        />
       </div>
 
       <ProfileEditForm

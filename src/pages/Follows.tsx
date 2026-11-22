@@ -1,6 +1,6 @@
 import { NavLink, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { getUserOptions } from "../utils/query-options";
+import { getUserFollowsOptions, getUserOptions } from "../utils/query-options";
 import { classNames } from "../utils/format";
 import FollowsUserList from "../components/FollowsUserList";
 
@@ -8,8 +8,13 @@ const Follows = () => {
   const { userId } = useParams();
 
   const userOptions = getUserOptions(Number(userId));
+  const userFollowsOptions = getUserFollowsOptions(
+    Number(userId),
+    location.pathname,
+  );
 
   const { isPending, error, data: user } = useQuery(userOptions);
+  const userFollowsQuery = useQuery(userFollowsOptions);
 
   if (isPending) return <div>Loading...</div>;
 
@@ -20,7 +25,7 @@ const Follows = () => {
       <h1 className="sr-only">{user.name}</h1>
       <nav className="flex items-center border-b border-white/20">
         <NavLink
-          to={`/users/${userId}/following`}
+          to={`/users/${user.id}/following`}
           className="flex h-13.25 min-w-14 grow flex-col items-center justify-end px-4 hover:bg-black/10 dark:hover:bg-white/10"
         >
           {({ isActive }) => (
@@ -40,7 +45,7 @@ const Follows = () => {
           )}
         </NavLink>
         <NavLink
-          to={`/users/${userId}/followers`}
+          to={`/users/${user.id}/followers`}
           className="flex h-13.25 min-w-14 grow flex-col items-center justify-end px-4 hover:bg-black/10 dark:hover:bg-white/10"
         >
           {({ isActive }) => (
@@ -61,7 +66,13 @@ const Follows = () => {
         </NavLink>
       </nav>
       <div>
-        <FollowsUserList />
+        <FollowsUserList
+          isPending={userFollowsQuery.isPending}
+          error={userFollowsQuery.error}
+          users={userFollowsQuery.data}
+          queryKey={userFollowsOptions.queryKey}
+          user={user}
+        />
       </div>
     </>
   );

@@ -21,7 +21,11 @@ import {
   unlikePost,
   unrepostPost,
 } from "../lib/api-client";
-import { currentUserOptions, getPostOptions } from "../utils/query-options";
+import {
+  currentUserOptions,
+  getPostOptions,
+  getRepliesOptions,
+} from "../utils/query-options";
 import { classNames } from "../utils/format";
 import { usePostForm } from "../hooks/usePostForm";
 import { useConfirmationDialog } from "../hooks/useConfirmationDialog";
@@ -34,9 +38,11 @@ const Post = () => {
   const queryClient = useQueryClient();
 
   const postOptions = getPostOptions(Number(postId));
+  const repliesOptions = getRepliesOptions(Number(postId));
 
   const { isPending, error, data: post } = useQuery(postOptions);
   const { data: user } = useQuery(currentUserOptions);
+  const repliesQuery = useQuery(repliesOptions);
 
   const isPostPinned = user?.pinnedPostId === post?.id;
 
@@ -361,7 +367,12 @@ const Post = () => {
           </div>
         </article>
       </div>
-      <PostRepliesList />
+      <PostRepliesList
+        isPending={repliesQuery.isPending}
+        error={repliesQuery.error}
+        replies={repliesQuery.data}
+        queryKey={repliesOptions.queryKey}
+      />
     </>
   );
 };

@@ -1,22 +1,26 @@
-import { useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { getRepliesOptions } from "../utils/query-options";
+import type { FC } from "react";
+import type { PostPublic } from "../interfaces/api";
+import type { QueryKey } from "../interfaces/props";
 import TimelinePost from "./TimelinePost";
 
-const PostRepliesList = () => {
-  const { postId } = useParams();
+interface Props {
+  isPending: boolean;
+  error: Error | null;
+  replies: PostPublic[] | undefined;
+  queryKey: QueryKey<PostPublic[]>;
+}
 
-  const repliesOptions = getRepliesOptions(Number(postId));
-
-  const { isPending, error, data: replies } = useQuery(repliesOptions);
-
-  const { queryKey } = repliesOptions;
-
+const PostRepliesList: FC<Props> = ({
+  isPending,
+  error,
+  replies,
+  queryKey,
+}) => {
   if (isPending) return <div>Loading...</div>;
 
   if (error) return <div>{error.message}</div>;
 
-  return replies.map((reply) => (
+  return replies?.map((reply) => (
     <TimelinePost post={reply} queryKey={queryKey} key={reply.id} />
   ));
 };
