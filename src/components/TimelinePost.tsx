@@ -27,6 +27,7 @@ import {
 } from "../lib/api-client";
 import { usePostForm } from "../hooks/usePostForm";
 import { useConfirmationDialog } from "../hooks/useConfirmationDialog";
+import Quote from "./Quote";
 
 interface Props {
   post: PostPublic;
@@ -265,6 +266,7 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
             </div>
           </div>
           <div>{post.text}</div>
+          {post.quotedPost && <Quote post={post.quotedPost} />}
           <div className="mt-3 flex justify-between gap-x-1">
             <button
               onClick={handleReplyToggle}

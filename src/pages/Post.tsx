@@ -30,6 +30,7 @@ import { classNames } from "../utils/format";
 import { usePostForm } from "../hooks/usePostForm";
 import { useConfirmationDialog } from "../hooks/useConfirmationDialog";
 import PostRepliesList from "../components/PostRepliesList";
+import Quote from "../components/Quote";
 
 const Post = () => {
   const { toggleReply, toggleQuote } = usePostForm();
@@ -216,6 +217,7 @@ const Post = () => {
           </div>
           <div>
             <div className="mt-3">{post.text}</div>
+            {post.quotedPost && <Quote post={post.quotedPost} />}
             <div className="my-4">
               <time
                 dateTime={post.createdAt}

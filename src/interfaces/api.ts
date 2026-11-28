@@ -48,7 +48,7 @@ interface Author {
   profileImageUrl: string;
 }
 
-interface PostReference {
+export interface PostReference {
   id: number;
   text: string;
   attachment: string;
