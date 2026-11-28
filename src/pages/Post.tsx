@@ -147,7 +147,7 @@ const Post = () => {
                 className="focus-visible:outline-primary block w-fit rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 <img
-                  alt=""
+                  alt={`@${post.author.username}`}
                   src={post.author.profileImageUrl}
                   className="cursor-pointer rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
                 />
@@ -247,6 +247,7 @@ const Post = () => {
 
                 <Menu as="div" className="relative self-center">
                   <MenuButton
+                    aria-label={`${post._count.reposts} ${post._count.reposts === 1 ? "repost" : "reposts"}. Repost`}
                     className={classNames(
                       "group hover:text-repost flex min-h-5 cursor-pointer justify-center overflow-visible",
                       post.interactionStatus.isReposted
@@ -277,7 +278,6 @@ const Post = () => {
                       <button
                         onClick={handleRepostToggle}
                         disabled={repostMutation.isPending}
-                        aria-label={`${post._count.reposts} ${post._count.reposts === 1 ? "repost" : "reposts"}. Repost`}
                         className="flex w-full cursor-pointer items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5"
                       >
                         <ArrowPathRoundedSquareIcon
