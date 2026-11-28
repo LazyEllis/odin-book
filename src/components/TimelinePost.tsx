@@ -1,5 +1,5 @@
-import type { FC, MouseEvent } from "react";
-import { Link, useNavigate } from "react-router";
+import type { FC } from "react";
+import { Link } from "react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import {
@@ -35,7 +35,6 @@ interface Props {
 }
 
 const TimelinePost: FC<Props> = ({ post, queryKey }) => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { toggleDelete, togglePin } = useConfirmationDialog();
   const { toggleReply, toggleQuote } = usePostForm();
@@ -130,58 +129,35 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
     },
   });
 
-  const handlePostClick = () => navigate(`/posts/${post.id}`);
+  const handleReplyToggle = () => toggleReply(post.id);
 
-  const handleLinkClick = (e: MouseEvent) => e.stopPropagation();
+  const handleRepostToggle = () => repostMutation.mutate(post.id);
 
-  const handleReplyToggle = (e: MouseEvent) => {
-    e.stopPropagation();
-    toggleReply(post.id);
-  };
+  const handleQuoteToggle = () => toggleQuote(post.id);
 
-  const handleRepostToggle = (e: MouseEvent) => {
-    e.stopPropagation();
-    repostMutation.mutate(post.id);
-  };
+  const handleLikeToggle = () => likeMutation.mutate(post.id);
 
-  const handleQuoteToggle = (e: MouseEvent) => {
-    e.stopPropagation();
-    toggleQuote(post.id);
-  };
+  const handleBookmarkToggle = () => bookmarkMutation.mutate(post.id);
 
-  const handleLikeToggle = (e: MouseEvent) => {
-    e.stopPropagation();
-    likeMutation.mutate(post.id);
-  };
+  const handleDeleteToggle = () => toggleDelete(post.id);
 
-  const handleBookmarkToggle = (e: MouseEvent) => {
-    e.stopPropagation();
-    bookmarkMutation.mutate(post.id);
-  };
-
-  const handleDeleteToggle = (e: MouseEvent) => {
-    e.stopPropagation();
-    toggleDelete(post.id);
-  };
-
-  const handlePinToggle = (e: MouseEvent) => {
-    e.stopPropagation();
-    togglePin(post.id);
-  };
+  const handlePinToggle = () => togglePin(post.id);
 
   return (
-    <div className="border-b border-black/10 dark:border-white/20">
-      <article
-        onClick={handlePostClick}
-        className="flex cursor-pointer px-4 py-3 hover:bg-black/3 dark:hover:bg-white/3"
-      >
+    <div className="relative cursor-pointer border-b border-black/10 transition-colors hover:bg-black/3 focus-visible:outline-2 focus-visible:-outline-offset-2 dark:border-white/20 dark:hover:bg-white/3">
+      <Link
+        aria-hidden
+        tabIndex={-1}
+        to={`/posts/${post.id}`}
+        className="absolute inset-0"
+      ></Link>
+      <article className="flex px-4 py-3">
         <div className="mr-2 shrink-0 grow-0 basis-10 items-center">
           <Link
             aria-hidden
             tabIndex={-1}
             to={`/users/${post.author.id}`}
-            onClick={handleLinkClick}
-            className="focus-visible:outline-primary block w-fit rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="focus-visible:outline-primary relative block w-fit rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <img
               alt={`@${post.author.username}`}
@@ -193,33 +169,31 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
         <div className="min-w-0 flex-1 justify-center">
           <div className="mb-0.5">
             <div className="flex items-start justify-between">
-              <div className="min-w-0">
+              <div className="flex min-w-0 gap-x-1 *:relative">
                 <Link
                   to={`/users/${post.author.id}`}
-                  onClick={handleLinkClick}
-                  className="block truncate font-bold hover:underline"
+                  className="truncate font-bold hover:underline"
                 >
                   {post.author.name}
                 </Link>
-                <div className="flex text-gray-500 dark:text-gray-400">
-                  <Link
-                    className="truncate"
-                    to={`/users/${post.author.id}`}
-                    onClick={handleLinkClick}
-                  >
-                    @{post.author.username}
-                  </Link>
-                  <div className="px-1">·</div>
+                <Link
+                  to={`/users/${post.author.id}`}
+                  className="truncate text-gray-500 dark:text-gray-400"
+                >
+                  @{post.author.username}
+                </Link>
+                <span className="text-gray-500 dark:text-gray-400">·</span>
+                <Link
+                  to={`/posts/${post.id}`}
+                  className="text-gray-500 hover:underline dark:text-gray-400"
+                >
                   <time dateTime={post.createdAt}>
                     {formatTimestamp(post.createdAt)}
                   </time>
-                </div>
+                </Link>
               </div>
               <Menu as="div" className="relative ml-2">
-                <MenuButton
-                  onClick={handleLinkClick}
-                  className="group hover:text-bookmark relative block cursor-pointer text-gray-400 dark:text-gray-400"
-                >
+                <MenuButton className="group hover:text-bookmark relative block cursor-pointer text-gray-400 dark:text-gray-400">
                   <span className="group-hover:bg-bookmark/10 absolute -inset-2 rounded-full" />
                   <span className="sr-only">Open options</span>
                   <EllipsisHorizontalIcon
@@ -254,7 +228,6 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
                   <MenuItem>
                     <Link
                       to={`/posts/${post.id}/quotes`}
-                      onClick={handleLinkClick}
                       className="flex items-center px-3 py-1 text-sm/6 font-bold text-gray-900 data-focus:bg-gray-50 data-focus:outline-hidden dark:text-white dark:data-focus:bg-white/5"
                     >
                       <ChartBarSquareIcon className="mr-3 size-4.75" />
@@ -265,7 +238,7 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
               </Menu>
             </div>
           </div>
-          <div>{post.text}</div>
+          <span className="relative">{post.text}</span>
           {post.quotedPost && <Quote post={post.quotedPost} />}
           <div className="mt-3 flex justify-between gap-x-1">
             <button
@@ -288,7 +261,6 @@ const TimelinePost: FC<Props> = ({ post, queryKey }) => {
 
             <Menu as="div" className="relative self-center">
               <MenuButton
-                onClick={handleLinkClick}
                 aria-label={`${post._count.reposts} ${post._count.reposts === 1 ? "repost" : "reposts"}. Repost`}
                 className={classNames(
                   "group hover:text-repost flex min-h-5 cursor-pointer justify-center overflow-visible",
