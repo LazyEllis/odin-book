@@ -219,13 +219,15 @@ const Post = () => {
             <div className="mt-3">{post.text}</div>
             {post.quotedPost && <Quote post={post.quotedPost} />}
             <div className="my-4">
-              <time
-                dateTime={post.createdAt}
-                className="text-gray-500 dark:text-gray-400"
+              <Link
+                to={`/posts/${post.id}`}
+                className="text-gray-500 hover:underline dark:text-gray-400"
               >
-                {format(post.createdAt, "h:m a")} ·{" "}
-                {format(post.createdAt, "MMM d, y")}
-              </time>
+                <time dateTime={post.createdAt}>
+                  {format(post.createdAt, "h:mm a")} ·{" "}
+                  {format(post.createdAt, "MMM d, y")}
+                </time>
+              </Link>
             </div>
             <div>
               <div className="flex h-10 min-h-7.5 justify-between gap-x-1 border-t border-black/10 px-1 dark:border-white/20">
